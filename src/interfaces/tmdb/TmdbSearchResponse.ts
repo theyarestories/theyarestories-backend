@@ -1,8 +1,8 @@
-import { TmdbDemoMovie } from "./TmdbDemoMovie";
+// import { TmdbDemoMovie } from "./TmdbDemoMovie";
 
-export interface TmdbSearchResponse {
-  page: number;
-  results: TmdbDemoMovie[];
-  total_results: number;
-  total_pages: number;
-}
+// export interface TmdbSearchResponse {
+//   page: number;
+//   results: TmdbDemoMovie[];
+//   total_results: number;
+//   total_pages: number;
+// }
