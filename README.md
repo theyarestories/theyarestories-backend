@@ -1,13 +1,12 @@
 # Buffs Back-End
 
-Backend RESTful API For Buffs social app
+Backend RESTful API For They are stories website
 
 ## Built With
 
 - TypeScript
 - Node / Express
 - Mongoose
-- Mocha, Chai and Supertest
 
 ## Contribution
 
@@ -19,10 +18,10 @@ How to set up Doppler in the project after installation: https://docs.doppler.co
 
 ```
 # Clone this repository
-git clone https://github.com/moaaz-bhnas/camper-api.git
+git clone https://github.com/theyarestories/theyarestories-backend.git
 
 # Go into the repository
-cd camper-api
+cd theyarestories-backend
 
 # Install dependencies
 npm install
