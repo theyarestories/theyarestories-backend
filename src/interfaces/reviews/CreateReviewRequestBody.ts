@@ -1,7 +1,7 @@
-import { IMovie } from "../movies/IMovie";
+// import { IMovie } from "../movies/IMovie";
 
-export interface CreateReviewRequestBody {
-  movieDetails: IMovie;
-  rating: number;
-  review: string;
-}
+// export interface CreateReviewRequestBody {
+//   movieDetails: IMovie;
+//   rating: number;
+//   review: string;
+// }
