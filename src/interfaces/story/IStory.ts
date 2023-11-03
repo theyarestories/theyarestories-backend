@@ -6,6 +6,16 @@ export interface IStory {
   city: string;
   story: string;
   images: string[];
+  avatar: string;
+  dateOfBirth?: Date;
+  job?: string;
+}
+
+export interface RegisteringStory {
+  protagonist: string;
+  city: string;
+  story: string;
+  images: string[];
   dateOfBirth?: Date;
   avatar?: string;
   job?: string;

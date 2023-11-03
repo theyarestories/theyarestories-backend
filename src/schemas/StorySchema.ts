@@ -1,5 +1,5 @@
 import { IStory } from "@/interfaces/story/IStory";
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 export const StorySchema = new Schema<IStory>({
   protagonist: {
@@ -33,3 +33,7 @@ export const StorySchema = new Schema<IStory>({
     required: false,
   },
 });
+
+const StoryModel = model<IStory>("Story", StorySchema);
+
+export default StoryModel;
