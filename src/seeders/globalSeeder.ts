@@ -1,25 +1,21 @@
 import { ISeeder } from "@/interfaces/seeder/Seeder";
-// import UsersSeeder from "./usersSeeder";
 import connectDB from "@/db";
 import { Command } from "@/interfaces/seeder/Command";
-// import ReviewsSeeder from "./reviewsSeeder";
+import StoriesSeeder from "./storiesSeeder";
 
 /**
- * Seeds users and reviews data to the database for testing
+ * Seeds stories data to the database for testing
  * ONLY USE IT IN DEVELOPMENT MODE
  */
 class GlobalSeeder implements ISeeder {
-  // private usersSeeder = new UsersSeeder();
-  // private reviewsSeeder = new ReviewsSeeder();
+  private storiesSeeder = new StoriesSeeder();
 
   async seed(): Promise<void> {
-    // await this.usersSeeder.seed();
-    // await this.reviewsSeeder.seed();
+    await this.storiesSeeder.seed();
   }
 
   async unseed(): Promise<void> {
-    // await this.usersSeeder.unseed();
-    // await this.reviewsSeeder.unseed();
+    await this.storiesSeeder.unseed();
   }
 
   async run(): Promise<void> {
