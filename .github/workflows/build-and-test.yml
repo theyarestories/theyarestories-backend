@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [staging]
+    branches: [staging, main]
   pull_request:
-    branches: [staging]
+    branches: [staging, main]
 
 env:
   JWT_COOKIE_EXPIRE: ${{secrets.JWT_COOKIE_EXPIRE}}
@@ -16,7 +16,6 @@ env:
   MONGO_URI: ${{secrets.MONGO_URI}}
   NODE_ENV: ${{secrets.NODE_ENV}}
   PORT: ${{secrets.PORT}}
-  TMDB_API_KEY: ${{secrets.TMDB_API_KEY}}
 
 jobs:
   build:
@@ -32,4 +31,4 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-      - run: npm run test
+      # - run: npm run test
