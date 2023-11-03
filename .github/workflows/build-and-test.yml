@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [staging]
+    branches: [staging, main]
   pull_request:
-    branches: [staging]
+    branches: [staging, main]
 
 env:
   JWT_COOKIE_EXPIRE: ${{secrets.JWT_COOKIE_EXPIRE}}
