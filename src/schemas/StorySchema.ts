@@ -37,6 +37,11 @@ export const StorySchema = new Schema<IStory>({
     required: false,
     default: false,
   },
+  isHighlighted: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const StoryModel = model<IStory>("Story", StorySchema);
