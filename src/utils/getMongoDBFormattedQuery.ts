@@ -1,5 +1,6 @@
 import { Query } from "@/interfaces/express/Query";
 import structuredClone from "@ungap/structured-clone";
+import parseNumbersAndBooleans from "./data-formatting/parseBooleanAndNumberStrings";
 
 function removeReservedParams(query: Query): Query {
   // Fields to exclude
@@ -23,5 +24,6 @@ export default function getMongoDBFormattedQuery(query: Query) {
   let formattedQuery = structuredClone(query);
   formattedQuery = removeReservedParams(formattedQuery);
   formattedQuery = addDollarSignToOperators(formattedQuery);
+  formattedQuery = parseNumbersAndBooleans(formattedQuery);
   return formattedQuery;
 }
