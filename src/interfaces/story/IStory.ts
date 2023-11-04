@@ -7,6 +7,7 @@ export interface IStory {
   story: string;
   images: string[];
   avatar: string;
+  isApproved: boolean;
   dateOfBirth?: Date;
   job?: string;
 }
@@ -16,6 +17,7 @@ export interface RegisteringStory {
   city: string;
   story: string;
   images: string[];
+  isApproved?: boolean;
   dateOfBirth?: Date;
   avatar?: string;
   job?: string;

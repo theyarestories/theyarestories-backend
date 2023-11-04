@@ -32,6 +32,11 @@ export const StorySchema = new Schema<IStory>({
     type: String,
     required: false,
   },
+  isApproved: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const StoryModel = model<IStory>("Story", StorySchema);
