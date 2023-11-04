@@ -10,6 +10,7 @@ import cors, { CorsOptions } from "cors";
 // import authRouter from "@/routes/authRouter";
 // import usersRouter from "@/routes/usersRouter";
 import errorHandler from "@/middlewares/errorHandler";
+import StoriesRouter from "./routes/storiesRouter";
 // import reviewsRouter from "./routes/reviewsRouter";
 
 const app: Application = express();
@@ -64,9 +65,7 @@ app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "public")));
 
 // mount routers
-// app.use("/api/v1/auth", authRouter);
-// app.use("/api/v1/users", usersRouter);
-// app.use("/api/v1/reviews", reviewsRouter);
+app.use("/api/v1/stories", StoriesRouter.init());
 
 // error handling
 app.use(errorHandler);
