@@ -4,21 +4,21 @@ import { RegisteringStory } from "@/interfaces/story/IStory";
 import StoryModel from "@/schemas/StorySchema";
 
 export default class StoriesSeeder implements ISeeder {
-  private count: number;
+  private defaultCount = 20;
 
-  constructor(count = 20) {
-    this.count = count;
-  }
-
-  generateStory(): RegisteringStory {
+  private generateStory(): RegisteringStory {
     const story: RegisteringStory = {
       protagonist: faker.internet.displayName(),
       city: faker.location.city(),
       story: faker.person.bio(),
-      avatar: faker.image.avatar(),
       images: Array(Math.ceil(Math.random() * 4))
         .fill(null)
-        .map(() => faker.image.urlPicsumPhotos()),
+        .map(() =>
+          faker.image.urlPicsumPhotos({
+            width: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
+            height: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
+          })
+        ),
       dateOfBirth: faker.date.anytime(),
       job: faker.person.jobTitle(),
     };
@@ -26,7 +26,7 @@ export default class StoriesSeeder implements ISeeder {
     return story;
   }
 
-  generateStories(count = this.count): RegisteringStory[] {
+  generateStories(count = this.defaultCount): RegisteringStory[] {
     const stories: RegisteringStory[] = [];
 
     for (let i = 0; i < count; i++) {
@@ -38,8 +38,8 @@ export default class StoriesSeeder implements ISeeder {
     return stories;
   }
 
-  async seed(): Promise<void> {
-    const stories = this.generateStories();
+  async seed(count = this.defaultCount): Promise<void> {
+    const stories = this.generateStories(count);
 
     try {
       await StoryModel.create(stories);
