@@ -18,8 +18,6 @@ export default function (model: Model<any>) {
   ) {
     const formattedQuery = getMongoDBFormattedQuery(req.query);
 
-    console.log("👏", formattedQuery);
-
     // build query
     let query = model.find(formattedQuery);
 

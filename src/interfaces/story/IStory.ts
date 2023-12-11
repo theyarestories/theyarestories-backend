@@ -6,11 +6,13 @@ export interface IStory {
   city: string;
   story: string;
   images: string[];
-  avatar: string;
   isApproved: boolean;
   isHighlighted: boolean;
+  isDeleted: boolean;
   dateOfBirth?: Date;
   job?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface RegisteringStory {
@@ -20,7 +22,7 @@ export interface RegisteringStory {
   images: string[];
   isApproved?: boolean;
   isHighlighted?: boolean;
+  isDeleted?: boolean;
   dateOfBirth?: Date;
-  avatar?: string;
   job?: string;
 }
