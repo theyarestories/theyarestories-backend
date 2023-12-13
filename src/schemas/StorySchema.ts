@@ -1,7 +1,7 @@
-import { IStory } from "@/interfaces/story/IStory";
+import { IStory, StoryTranslatedFields } from "@/interfaces/story/IStory";
 import { Schema, model } from "mongoose";
 
-export const StorySchema = new Schema<IStory>(
+const TranslatedSchema = new Schema<StoryTranslatedFields>(
   {
     protagonist: {
       type: String,
@@ -15,18 +15,33 @@ export const StorySchema = new Schema<IStory>(
       type: String,
       required: [true, "Please add protagonist story"],
     },
+    job: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+export const StorySchema = new Schema<IStory>(
+  {
+    ...TranslatedSchema.obj,
     dateOfBirth: {
       type: Date,
       required: false,
+    },
+    avatar: {
+      type: String,
+      required: false,
+      default: "",
     },
     images: {
       type: [String],
       required: false,
       default: [],
-    },
-    job: {
-      type: String,
-      required: false,
     },
     isApproved: {
       type: Boolean,
@@ -42,6 +57,10 @@ export const StorySchema = new Schema<IStory>(
       type: Boolean,
       required: false,
       default: false,
+    },
+    translations: {
+      type: Schema.Types.Map,
+      of: TranslatedSchema,
     },
   },
   {
