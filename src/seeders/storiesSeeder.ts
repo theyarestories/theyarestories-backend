@@ -11,6 +11,10 @@ export default class StoriesSeeder implements ISeeder {
       protagonist: faker.internet.displayName(),
       city: faker.location.city(),
       story: faker.person.bio(),
+      avatar: faker.image.urlPicsumPhotos({
+        width: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
+        height: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
+      }),
       images: Array(Math.ceil(Math.random() * 4))
         .fill(null)
         .map(() =>
@@ -19,8 +23,16 @@ export default class StoriesSeeder implements ISeeder {
             height: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
           })
         ),
-      dateOfBirth: faker.date.anytime(),
+      dateOfBirth: faker.date.anytime().toISOString(),
       job: faker.person.jobTitle(),
+      translations: {
+        en: {
+          protagonist: faker.internet.displayName(),
+          city: faker.location.city(),
+          story: faker.person.bio(),
+          job: faker.person.jobTitle(),
+        },
+      },
     };
 
     return story;

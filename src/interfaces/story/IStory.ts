@@ -1,28 +1,33 @@
 import { Types } from "mongoose";
 
-export interface IStory {
-  _id: Types.ObjectId;
+export interface StoryTranslatedFields {
   protagonist: string;
   city: string;
   story: string;
+  job: string;
+}
+
+export type IStory = StoryTranslatedFields & {
+  _id: Types.ObjectId;
+  avatar?: string;
   images: string[];
   isApproved: boolean;
   isHighlighted: boolean;
   isDeleted: boolean;
-  dateOfBirth?: Date;
-  job?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+  dateOfBirth?: string;
+  createdAt: string;
+  updatedAt: string;
+  translations: {
+    [key: string]: StoryTranslatedFields;
+  };
+};
 
-export interface RegisteringStory {
-  protagonist: string;
-  city: string;
-  story: string;
-  images: string[];
-  isApproved?: boolean;
-  isHighlighted?: boolean;
-  isDeleted?: boolean;
-  dateOfBirth?: Date;
-  job?: string;
-}
+export type RegisteringStory = Omit<
+  IStory,
+  | "_id"
+  | "isApproved"
+  | "isHighlighted"
+  | "isDeleted"
+  | "createdAt"
+  | "updatedAt"
+>;

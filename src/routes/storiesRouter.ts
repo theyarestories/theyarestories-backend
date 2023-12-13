@@ -1,4 +1,6 @@
+import { TypedRequestBody } from "@/interfaces/express/TypedRequestBody";
 import HttpStatusCode from "@/interfaces/http-status-codes/HttpStatusCode";
+import { RegisteringStory } from "@/interfaces/story/IStory";
 import advancedResults from "@/middlewares/advancedResults";
 import StoryModel from "@/schemas/StorySchema";
 import ErrorResponse from "@/utils/errorResponse";
@@ -10,6 +12,7 @@ export default class StoriesRouter {
   static init() {
     this.router.get(`/`, advancedResults(StoryModel), this.getStories);
     this.router.get(`/:storyId`, this.getSignleStory);
+    this.router.post(`/`, this.createStory);
 
     return this.router;
   }
@@ -45,6 +48,25 @@ export default class StoriesRouter {
       }
 
       res.status(HttpStatusCode.OK).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Creates a new story
+   * @route     POST /api/v1/story
+   * @access    Public
+   */
+  static async createStory(
+    req: TypedRequestBody<RegisteringStory>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const story = await StoryModel.create(req.body);
+
+      res.status(HttpStatusCode.CREATED).json({ success: true, data: story });
     } catch (error) {
       next(error);
     }
