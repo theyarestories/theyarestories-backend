@@ -28,7 +28,23 @@ const TranslatedSchema = new Schema<StoryTranslatedFields>(
 
 export const StorySchema = new Schema<IStory>(
   {
-    ...TranslatedSchema.obj,
+    protagonist: {
+      type: String,
+      required: [true, "Please add protagonist name"],
+    },
+    city: {
+      type: String,
+      required: [true, "Please add city"],
+    },
+    story: {
+      type: String,
+      required: [true, "Please add protagonist story"],
+    },
+    job: {
+      type: String,
+      required: false,
+      default: null,
+    },
     dateOfBirth: {
       type: Date,
       required: false,
