@@ -17,7 +17,7 @@
   },
   "scripts": {
     "dev": "npx nodemon src/server.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "seed": "npx nodemon src/seeders/globalSeeder.ts i",
     "unseed": "npx nodemon src/seeders/globalSeeder.ts d",
     "start": "node dist/server.js",
@@ -72,6 +72,7 @@
     "nodemon": "^3.0.1",
     "supertest": "^6.3.3",
     "ts-node": "10.9.1",
+    "tsc-alias": "^1.8.8",
     "typescript": "^5.0.4"
   }
 }
