@@ -25,7 +25,7 @@ class GlobalSeeder implements ISeeder {
 
     if (!command) {
       throw new Error(
-        "Please add an argument i (import) / d (delete) to the command."
+        "Please add an argument i (import) / d (delete) to the command"
       );
     }
 
