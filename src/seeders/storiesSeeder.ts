@@ -11,18 +11,10 @@ export default class StoriesSeeder implements ISeeder {
       protagonist: faker.internet.displayName(),
       city: faker.location.city(),
       story: faker.person.bio(),
-      avatar: faker.image.urlPicsumPhotos({
-        width: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-        height: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-      }),
-      images: Array(Math.ceil(Math.random() * 4))
-        .fill(null)
-        .map(() =>
-          faker.image.urlPicsumPhotos({
-            width: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-            height: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-          })
-        ),
+      avatar: {
+        cloudinaryId: "protagonists/tlfl7zegosyr6tcu0dme",
+        url: "https://res.cloudinary.com/dfddvb63i/image/upload/v1703266206/protagonists/tlfl7zegosyr6tcu0dme.webp",
+      },
       dateOfBirth: faker.date.anytime().toISOString(),
       job: faker.person.jobTitle(),
       translations: {

@@ -1,4 +1,8 @@
-import { IStory, StoryTranslatedFields } from "@/interfaces/story/IStory";
+import {
+  IStory,
+  Image,
+  StoryTranslatedFields,
+} from "@/interfaces/story/IStory";
 import { Schema, model } from "mongoose";
 
 const TranslatedSchema = new Schema<StoryTranslatedFields>(
@@ -26,6 +30,17 @@ const TranslatedSchema = new Schema<StoryTranslatedFields>(
   }
 );
 
+export const ImageSchema = new Schema<Image>({
+  cloudinaryId: {
+    type: String,
+    required: [true, "Please add image Cloudinary ID"],
+  },
+  url: {
+    type: String,
+    required: [true, "Please add image URL"],
+  },
+});
+
 export const StorySchema = new Schema<IStory>(
   {
     protagonist: {
@@ -48,16 +63,12 @@ export const StorySchema = new Schema<IStory>(
     dateOfBirth: {
       type: Date,
       required: false,
+      default: null,
     },
     avatar: {
-      type: String,
+      type: ImageSchema,
       required: false,
-      default: "",
-    },
-    images: {
-      type: [String],
-      required: false,
-      default: [],
+      default: null,
     },
     isApproved: {
       type: Boolean,

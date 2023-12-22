@@ -7,10 +7,14 @@ export interface StoryTranslatedFields {
   job: string;
 }
 
+export interface Image {
+  cloudinaryId: string;
+  url: string;
+}
+
 export type IStory = StoryTranslatedFields & {
   _id: Types.ObjectId;
-  avatar?: string;
-  images: string[];
+  avatar?: Image;
   isApproved: boolean;
   isHighlighted: boolean;
   isDeleted: boolean;
