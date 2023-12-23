@@ -18,7 +18,7 @@ export type IStory = StoryTranslatedFields & {
   isApproved: boolean;
   isHighlighted: boolean;
   isDeleted: boolean;
-  dateOfBirth?: string;
+  age?: number;
   createdAt: string;
   updatedAt: string;
   translations: {

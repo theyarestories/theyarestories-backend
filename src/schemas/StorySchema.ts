@@ -60,8 +60,8 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: null,
     },
-    dateOfBirth: {
-      type: Date,
+    age: {
+      type: Number,
       required: false,
       default: null,
     },

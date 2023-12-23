@@ -15,7 +15,7 @@ export default class StoriesSeeder implements ISeeder {
         cloudinaryId: "protagonists/tlfl7zegosyr6tcu0dme",
         url: "https://res.cloudinary.com/dfddvb63i/image/upload/v1703266206/protagonists/tlfl7zegosyr6tcu0dme.webp",
       },
-      dateOfBirth: faker.date.anytime().toISOString(),
+      age: faker.number.int({ min: 1, max: 90 }),
       job: faker.person.jobTitle(),
       translations: {
         en: {
