@@ -14,11 +14,11 @@ export interface Image {
 
 export type IStory = StoryTranslatedFields & {
   _id: Types.ObjectId;
-  avatar?: Image;
+  avatar: Image;
   isApproved: boolean;
   isHighlighted: boolean;
   isDeleted: boolean;
-  age?: number;
+  age: number | null;
   createdAt: string;
   updatedAt: string;
   translations: {
