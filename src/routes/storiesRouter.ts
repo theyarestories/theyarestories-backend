@@ -13,6 +13,7 @@ export default class StoriesRouter {
     this.router.get(`/`, advancedResults(StoryModel), this.getStories);
     this.router.get(`/:storyId`, this.getSignleStory);
     this.router.post(`/`, this.createStory);
+    this.router.put("/:storyId/share", this.updateStoryShares);
 
     return this.router;
   }
@@ -67,6 +68,29 @@ export default class StoriesRouter {
       const story = await StoryModel.create(req.body);
 
       res.status(HttpStatusCode.CREATED).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Updates the shares count of a story
+   * @route     PUT /api/v1/story/:storyId/share
+   * @access    Public
+   */
+  static async updateStoryShares(
+    req: Request<{ storyId: string }, any, { platform: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const story = await StoryModel.findByIdAndUpdate(
+        req.params.storyId,
+        { $inc: { ["shares." + req.body.platform]: 1 } },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.OK).json({ success: true, data: story });
     } catch (error) {
       next(error);
     }

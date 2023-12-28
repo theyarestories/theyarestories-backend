@@ -85,6 +85,12 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: false,
     },
+    shares: {
+      type: Schema.Types.Map,
+      of: Number,
+      required: false,
+      default: {},
+    },
     translations: {
       type: Schema.Types.Map,
       of: TranslatedSchema,

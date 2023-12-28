@@ -21,6 +21,9 @@ export type IStory = StoryTranslatedFields & {
   age: number | null;
   createdAt: string;
   updatedAt: string;
+  shares: {
+    [key: string]: number;
+  };
   translations: {
     [key: string]: StoryTranslatedFields;
   };
@@ -34,4 +37,5 @@ export type RegisteringStory = Omit<
   | "isDeleted"
   | "createdAt"
   | "updatedAt"
+  | "shares"
 >;
