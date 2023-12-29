@@ -17,6 +17,7 @@ export default class StoriesSeeder implements ISeeder {
       },
       age: faker.number.int({ min: 1, max: 90 }),
       job: faker.person.jobTitle(),
+      tags: ["child"],
       translations: {
         en: {
           protagonist: faker.internet.displayName(),

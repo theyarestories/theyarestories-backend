@@ -4,7 +4,7 @@ export interface StoryTranslatedFields {
   protagonist: string;
   city: string;
   story: string;
-  job: string;
+  job?: string;
 }
 
 export interface Image {
@@ -24,18 +24,17 @@ export type IStory = StoryTranslatedFields & {
   shares: {
     [key: string]: number;
   };
+  tags: string[];
   translations: {
     [key: string]: StoryTranslatedFields;
   };
 };
 
-export type RegisteringStory = Omit<
-  IStory,
-  | "_id"
-  | "isApproved"
-  | "isHighlighted"
-  | "isDeleted"
-  | "createdAt"
-  | "updatedAt"
-  | "shares"
->;
+export type RegisteringStory = StoryTranslatedFields & {
+  avatar?: Image;
+  age?: number;
+  tags?: string[];
+  translations: {
+    [key: string]: StoryTranslatedFields;
+  };
+};

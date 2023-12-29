@@ -70,6 +70,11 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: null,
     },
+    tags: {
+      type: [String],
+      required: false,
+      default: [],
+    },
     isApproved: {
       type: Boolean,
       required: false,
