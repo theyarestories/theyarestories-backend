@@ -4,6 +4,7 @@ export interface StoryTranslatedFields {
   protagonist: string;
   story: string;
   job?: string;
+  isApproved: boolean;
 }
 
 export interface Image {
@@ -11,8 +12,11 @@ export interface Image {
   url: string;
 }
 
-export type IStory = StoryTranslatedFields & {
+export type IStory = {
   _id: Types.ObjectId;
+  protagonist: string;
+  story: string;
+  job?: string;
   avatar: Image;
   city: string;
   age: number | null;
@@ -31,7 +35,10 @@ export type IStory = StoryTranslatedFields & {
   updatedAt: string;
 };
 
-export type RegisteringStory = StoryTranslatedFields & {
+export type RegisteringStory = {
+  protagonist: string;
+  story: string;
+  job?: string;
   city: string;
   avatar?: Image;
   age?: number;

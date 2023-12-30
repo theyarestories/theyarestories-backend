@@ -20,10 +20,13 @@ const TranslatedSchema = new Schema<StoryTranslatedFields>(
       required: false,
       default: null,
     },
+    isApproved: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
-  {
-    _id: false,
-  }
+  { timestamps: true }
 );
 
 export const ImageSchema = new Schema<Image>({
