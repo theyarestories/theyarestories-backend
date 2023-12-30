@@ -75,6 +75,11 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: [],
     },
+    viewsCount: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     isApproved: {
       type: Boolean,
       required: false,

@@ -13,7 +13,8 @@ export default class StoriesRouter {
     this.router.get(`/`, advancedResults(StoryModel), this.getStories);
     this.router.get(`/:storyId`, this.getSignleStory);
     this.router.post(`/`, this.createStory);
-    this.router.put("/:storyId/share", this.updateStoryShares);
+    this.router.put("/:storyId/share", this.incrementStoryShares);
+    this.router.put("/:storyId/view", this.incrementStoryViews);
 
     return this.router;
   }
@@ -74,11 +75,11 @@ export default class StoriesRouter {
   }
 
   /**
-   * @desc      Updates the shares count of a story
+   * @desc      Increments the shares count of a story
    * @route     PUT /api/v1/story/:storyId/share
    * @access    Public
    */
-  static async updateStoryShares(
+  static async incrementStoryShares(
     req: Request<{ storyId: string }, any, { platform: string }>,
     res: Response,
     next: NextFunction
@@ -87,6 +88,29 @@ export default class StoriesRouter {
       const story = await StoryModel.findByIdAndUpdate(
         req.params.storyId,
         { $inc: { ["shares." + req.body.platform]: 1 } },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.OK).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Increments the views count of a story
+   * @route     PUT /api/v1/story/:storyId/view
+   * @access    Public
+   */
+  static async incrementStoryViews(
+    req: Request<{ storyId: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const story = await StoryModel.findByIdAndUpdate(
+        req.params.storyId,
+        { $inc: { viewsCount: 1 } },
         { returnDocument: "after" }
       );
 
