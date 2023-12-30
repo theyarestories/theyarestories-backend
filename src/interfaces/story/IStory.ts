@@ -2,7 +2,6 @@ import { Types } from "mongoose";
 
 export interface StoryTranslatedFields {
   protagonist: string;
-  city: string;
   story: string;
   job?: string;
 }
@@ -15,9 +14,7 @@ export interface Image {
 export type IStory = StoryTranslatedFields & {
   _id: Types.ObjectId;
   avatar: Image;
-  isApproved: boolean;
-  isHighlighted: boolean;
-  isDeleted: boolean;
+  city: string;
   age: number | null;
   shares: {
     [key: string]: number;
@@ -27,11 +24,15 @@ export type IStory = StoryTranslatedFields & {
   translations: {
     [key: string]: StoryTranslatedFields;
   };
+  isApproved: boolean;
+  isHighlighted: boolean;
+  isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
 };
 
 export type RegisteringStory = StoryTranslatedFields & {
+  city: string;
   avatar?: Image;
   age?: number;
   tags?: string[];

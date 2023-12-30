@@ -21,7 +21,6 @@ export default class StoriesSeeder implements ISeeder {
       translations: {
         en: {
           protagonist: faker.internet.displayName(),
-          city: faker.location.city(),
           story: faker.person.bio(),
           job: faker.person.jobTitle(),
         },

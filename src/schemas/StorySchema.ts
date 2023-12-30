@@ -11,10 +11,6 @@ const TranslatedSchema = new Schema<StoryTranslatedFields>(
       type: String,
       required: [true, "Please add protagonist name"],
     },
-    city: {
-      type: String,
-      required: [true, "Please add city"],
-    },
     story: {
       type: String,
       required: [true, "Please add protagonist story"],
