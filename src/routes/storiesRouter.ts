@@ -1,6 +1,9 @@
 import { TypedRequestBody } from "@/interfaces/express/TypedRequestBody";
 import HttpStatusCode from "@/interfaces/http-status-codes/HttpStatusCode";
-import { RegisteringStory } from "@/interfaces/story/IStory";
+import {
+  RegisteringStory,
+  RegisteringTranslatedFields,
+} from "@/interfaces/story/IStory";
 import advancedResults from "@/middlewares/advancedResults";
 import StoryModel from "@/schemas/StorySchema";
 import ErrorResponse from "@/utils/errorResponse";
@@ -15,6 +18,7 @@ export default class StoriesRouter {
     this.router.post(`/`, this.createStory);
     this.router.put("/:storyId/share", this.incrementStoryShares);
     this.router.put("/:storyId/view", this.incrementStoryViews);
+    this.router.put("/:storyId/translate", this.translateStory);
 
     return this.router;
   }
@@ -111,6 +115,37 @@ export default class StoriesRouter {
       const story = await StoryModel.findByIdAndUpdate(
         req.params.storyId,
         { $inc: { viewsCount: 1 } },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.OK).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Adds a story translation
+   * @route     PUT /api/v1/story/:storyId/translate
+   * @access    Public
+   */
+  static async translateStory(
+    req: Request<
+      { storyId: string },
+      any,
+      { language: string; translatedFields: RegisteringTranslatedFields }
+    >,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const story = await StoryModel.findByIdAndUpdate(
+        req.params.storyId,
+        {
+          $set: {
+            ["translations." + req.body.language]: req.body.translatedFields,
+          },
+        },
         { returnDocument: "after" }
       );
 

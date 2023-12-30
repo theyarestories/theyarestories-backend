@@ -35,6 +35,12 @@ export type IStory = {
   updatedAt: string;
 };
 
+export type RegisteringTranslatedFields = {
+  protagonist: string;
+  story: string;
+  job?: string;
+};
+
 export type RegisteringStory = {
   protagonist: string;
   story: string;
