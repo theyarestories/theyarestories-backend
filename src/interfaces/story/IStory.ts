@@ -6,6 +6,8 @@ export interface StoryTranslatedFields {
   story: string;
   job?: string;
   isApproved: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Image {
