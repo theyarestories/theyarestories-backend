@@ -8,6 +8,7 @@ import advancedResults from "@/middlewares/advancedResults";
 import StoryModel from "@/schemas/StorySchema";
 import ErrorResponse from "@/utils/errorResponse";
 import { NextFunction, Request, Response, Router } from "express";
+import { Types } from "mongoose";
 
 export default class StoriesRouter {
   static router = Router();
@@ -70,6 +71,12 @@ export default class StoriesRouter {
     next: NextFunction
   ) {
     try {
+      // Create an ID for the translation
+      const translationId = new Types.ObjectId();
+      const firstTranslationKey = Object.keys(req.body.translations)[0];
+      req.body.translations[firstTranslationKey]._id = translationId;
+      req.body.translationId = translationId;
+
       const story = await StoryModel.create(req.body);
 
       res.status(HttpStatusCode.CREATED).json({ success: true, data: story });

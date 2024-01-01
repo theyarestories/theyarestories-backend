@@ -100,6 +100,11 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: {},
     },
+    translationId: {
+      type: Schema.Types.ObjectId,
+      required: false,
+      default: null,
+    },
     translations: {
       type: Schema.Types.Map,
       of: TranslatedSchema,
