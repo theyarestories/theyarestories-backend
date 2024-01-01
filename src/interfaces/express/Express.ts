@@ -6,6 +6,7 @@ declare global {
       advancedResults: {
         success: boolean;
         count: number;
+        totalCount: number;
         pagination: {
           [key: string]: {
             page: number;
