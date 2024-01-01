@@ -71,7 +71,7 @@ export default class StoriesRouter {
     next: NextFunction
   ) {
     try {
-      // Create an ID for the translation
+      // Create an ID for the translation early to set it as the translationId for the story
       const translationId = new Types.ObjectId();
       const firstTranslationKey = Object.keys(req.body.translations)[0];
       req.body.translations[firstTranslationKey]._id = translationId;
