@@ -1,33 +1,62 @@
 import { Types } from "mongoose";
 
-export interface StoryTranslatedFields {
-  protagonist: string;
-  city: string;
-  story: string;
-  job: string;
+export interface Image {
+  cloudinaryId: string;
+  url: string;
 }
 
-export type IStory = StoryTranslatedFields & {
+export interface StoryTranslatedFields {
   _id: Types.ObjectId;
-  avatar?: string;
-  images: string[];
+  translationLanguage: string;
+  protagonist: string;
+  story: string;
+  job?: string;
   isApproved: boolean;
-  isHighlighted: boolean;
-  isDeleted: boolean;
-  dateOfBirth?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export type RegisteringTranslatedFields = {
+  translationLanguage: string;
+  protagonist: string;
+  story: string;
+  job?: string;
+};
+
+export type IStory = {
+  _id: Types.ObjectId;
+  protagonist: string;
+  story: string;
+  job?: string;
+  avatar: Image;
+  city: string;
+  age: number | null;
+  shares: {
+    [key: string]: number;
+  };
+  tags: string[];
+  viewsCount: number;
+  translationLanguage: String; // ar
   translations: {
     [key: string]: StoryTranslatedFields;
   };
+  isApproved: boolean;
+  isHighlighted: boolean;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
-export type RegisteringStory = Omit<
-  IStory,
-  | "_id"
-  | "isApproved"
-  | "isHighlighted"
-  | "isDeleted"
-  | "createdAt"
-  | "updatedAt"
->;
+export type RegisteringStory = {
+  protagonist: string;
+  story: string;
+  job?: string;
+  city: string;
+  avatar?: Image;
+  age?: number;
+  tags?: string[];
+  translationLanguage: String; // ar
+  translations: {
+    [key: string]: RegisteringTranslatedFields;
+  };
+};

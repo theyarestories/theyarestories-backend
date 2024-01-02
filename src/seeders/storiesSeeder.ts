@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { ISeeder } from "@/interfaces/seeder/Seeder";
 import { RegisteringStory } from "@/interfaces/story/IStory";
 import StoryModel from "@/schemas/StorySchema";
+import { Types } from "mongoose";
 
 export default class StoriesSeeder implements ISeeder {
   private defaultCount = 20;
@@ -11,24 +12,18 @@ export default class StoriesSeeder implements ISeeder {
       protagonist: faker.internet.displayName(),
       city: faker.location.city(),
       story: faker.person.bio(),
-      avatar: faker.image.urlPicsumPhotos({
-        width: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-        height: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-      }),
-      images: Array(Math.ceil(Math.random() * 4))
-        .fill(null)
-        .map(() =>
-          faker.image.urlPicsumPhotos({
-            width: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-            height: faker.helpers.rangeToNumber({ min: 400, max: 700 }),
-          })
-        ),
-      dateOfBirth: faker.date.anytime().toISOString(),
+      avatar: {
+        cloudinaryId: "protagonists/tlfl7zegosyr6tcu0dme",
+        url: "https://res.cloudinary.com/dfddvb63i/image/upload/v1703266206/protagonists/tlfl7zegosyr6tcu0dme.webp",
+      },
+      age: faker.number.int({ min: 1, max: 90 }),
       job: faker.person.jobTitle(),
+      tags: ["child"],
+      translationLanguage: "en",
       translations: {
         en: {
+          translationLanguage: "en",
           protagonist: faker.internet.displayName(),
-          city: faker.location.city(),
           story: faker.person.bio(),
           job: faker.person.jobTitle(),
         },

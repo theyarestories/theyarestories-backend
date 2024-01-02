@@ -38,7 +38,7 @@ export default function (model: Model<any>) {
     const limit = req.query.limit ? parseInt(req.query.limit) : 25;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const total = await model.countDocuments();
+    const totalCount = await model.countDocuments();
 
     query = query.skip(startIndex).limit(limit);
 
@@ -62,7 +62,7 @@ export default function (model: Model<any>) {
       };
     }
 
-    if (endIndex < total) {
+    if (endIndex < totalCount) {
       pagination.next = {
         page: page + 1,
         limit,
@@ -72,6 +72,7 @@ export default function (model: Model<any>) {
     res.advancedResults = {
       success: true,
       count: results.length,
+      totalCount,
       pagination,
       data: results,
     };

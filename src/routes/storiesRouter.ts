@@ -1,9 +1,13 @@
 import { TypedRequestBody } from "@/interfaces/express/TypedRequestBody";
 import HttpStatusCode from "@/interfaces/http-status-codes/HttpStatusCode";
-import { RegisteringStory } from "@/interfaces/story/IStory";
+import {
+  RegisteringStory,
+  RegisteringTranslatedFields,
+} from "@/interfaces/story/IStory";
 import advancedResults from "@/middlewares/advancedResults";
 import StoryModel from "@/schemas/StorySchema";
 import ErrorResponse from "@/utils/errorResponse";
+import storyHasLanguage from "@/utils/stories/storyHasLanguage";
 import { NextFunction, Request, Response, Router } from "express";
 
 export default class StoriesRouter {
@@ -13,6 +17,9 @@ export default class StoriesRouter {
     this.router.get(`/`, advancedResults(StoryModel), this.getStories);
     this.router.get(`/:storyId`, this.getSignleStory);
     this.router.post(`/`, this.createStory);
+    this.router.put("/:storyId/share", this.incrementStoryShares);
+    this.router.put("/:storyId/view", this.incrementStoryViews);
+    this.router.put("/:storyId/translate", this.translateStory);
 
     return this.router;
   }
@@ -67,6 +74,105 @@ export default class StoriesRouter {
       const story = await StoryModel.create(req.body);
 
       res.status(HttpStatusCode.CREATED).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Increments the shares count of a story
+   * @route     PUT /api/v1/story/:storyId/share
+   * @access    Public
+   */
+  static async incrementStoryShares(
+    req: Request<{ storyId: string }, any, { platform: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const story = await StoryModel.findByIdAndUpdate(
+        req.params.storyId,
+        { $inc: { ["shares." + req.body.platform]: 1 } },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.OK).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Increments the views count of a story
+   * @route     PUT /api/v1/story/:storyId/view
+   * @access    Public
+   */
+  static async incrementStoryViews(
+    req: Request<{ storyId: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const story = await StoryModel.findByIdAndUpdate(
+        req.params.storyId,
+        { $inc: { viewsCount: 1 } },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.OK).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Adds a story translation
+   * @route     PUT /api/v1/story/:storyId/translate
+   * @access    Public
+   */
+  static async translateStory(
+    req: Request<
+      { storyId: string },
+      any,
+      { translatedFields: RegisteringTranslatedFields }
+    >,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      // Check language already exists
+      const story = await StoryModel.findById(req.params.storyId);
+
+      if (!story) {
+        const error = new ErrorResponse({
+          message: `Story not found with id: ${req.params.storyId}`,
+          statusCode: HttpStatusCode.NOT_FOUND,
+        });
+        return next(error);
+      }
+
+      if (
+        storyHasLanguage(story, req.body.translatedFields.translationLanguage)
+      ) {
+        const error = new ErrorResponse({
+          message: `Story id: ${req.params.storyId} is already translated in ${req.body.translatedFields.translationLanguage}`,
+          statusCode: HttpStatusCode.CONFLICT,
+        });
+        return next(error);
+      }
+
+      const updatedStory = await StoryModel.findByIdAndUpdate(
+        req.params.storyId,
+        {
+          $set: {
+            ["translations." + req.body.translatedFields.translationLanguage]:
+              req.body.translatedFields,
+          },
+        },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.OK).json({ success: true, data: updatedStory });
     } catch (error) {
       next(error);
     }
