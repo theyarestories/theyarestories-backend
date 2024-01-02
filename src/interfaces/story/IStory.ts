@@ -1,7 +1,13 @@
 import { Types } from "mongoose";
 
+export interface Image {
+  cloudinaryId: string;
+  url: string;
+}
+
 export interface StoryTranslatedFields {
   _id: Types.ObjectId;
+  translationLanguage: string;
   protagonist: string;
   story: string;
   job?: string;
@@ -10,10 +16,12 @@ export interface StoryTranslatedFields {
   updatedAt: string;
 }
 
-export interface Image {
-  cloudinaryId: string;
-  url: string;
-}
+export type RegisteringTranslatedFields = {
+  translationLanguage: string;
+  protagonist: string;
+  story: string;
+  job?: string;
+};
 
 export type IStory = {
   _id: Types.ObjectId;
@@ -28,7 +36,7 @@ export type IStory = {
   };
   tags: string[];
   viewsCount: number;
-  translationId: Types.ObjectId;
+  translationLanguage: String; // ar
   translations: {
     [key: string]: StoryTranslatedFields;
   };
@@ -39,13 +47,6 @@ export type IStory = {
   updatedAt: string;
 };
 
-export type RegisteringTranslatedFields = {
-  _id?: Types.ObjectId;
-  protagonist: string;
-  story: string;
-  job?: string;
-};
-
 export type RegisteringStory = {
   protagonist: string;
   story: string;
@@ -54,7 +55,7 @@ export type RegisteringStory = {
   avatar?: Image;
   age?: number;
   tags?: string[];
-  translationId: Types.ObjectId;
+  translationLanguage: String; // ar
   translations: {
     [key: string]: RegisteringTranslatedFields;
   };
