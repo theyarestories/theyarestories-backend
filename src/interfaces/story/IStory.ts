@@ -26,6 +26,7 @@ export type RegisteringTranslatedFields = {
 export type IStory = {
   _id: Types.ObjectId;
   protagonist: string;
+  protagonistTranslations: string[];
   story: string;
   job?: string;
   avatar: Image;
@@ -49,6 +50,7 @@ export type IStory = {
 
 export type RegisteringStory = {
   protagonist: string;
+  protagonistTranslations: string[];
   story: string;
   job?: string;
   city: string;
