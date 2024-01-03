@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { ISeeder } from "@/interfaces/seeder/Seeder";
 import { RegisteringStory } from "@/interfaces/story/IStory";
 import StoryModel from "@/schemas/StorySchema";
+import { Types } from "mongoose";
 
 export default class StoriesSeeder implements ISeeder {
   private defaultCount = 20;
@@ -18,8 +19,10 @@ export default class StoriesSeeder implements ISeeder {
       age: faker.number.int({ min: 1, max: 90 }),
       job: faker.person.jobTitle(),
       tags: ["child"],
+      translationLanguage: "en",
       translations: {
         en: {
+          translationLanguage: "en",
           protagonist: faker.internet.displayName(),
           story: faker.person.bio(),
           job: faker.person.jobTitle(),

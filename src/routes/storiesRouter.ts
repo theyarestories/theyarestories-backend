@@ -7,6 +7,7 @@ import {
 import advancedResults from "@/middlewares/advancedResults";
 import StoryModel from "@/schemas/StorySchema";
 import ErrorResponse from "@/utils/errorResponse";
+import storyHasLanguage from "@/utils/stories/storyHasLanguage";
 import { NextFunction, Request, Response, Router } from "express";
 
 export default class StoriesRouter {
@@ -133,23 +134,45 @@ export default class StoriesRouter {
     req: Request<
       { storyId: string },
       any,
-      { language: string; translatedFields: RegisteringTranslatedFields }
+      { translatedFields: RegisteringTranslatedFields }
     >,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const story = await StoryModel.findByIdAndUpdate(
+      // Check language already exists
+      const story = await StoryModel.findById(req.params.storyId);
+
+      if (!story) {
+        const error = new ErrorResponse({
+          message: `Story not found with id: ${req.params.storyId}`,
+          statusCode: HttpStatusCode.NOT_FOUND,
+        });
+        return next(error);
+      }
+
+      if (
+        storyHasLanguage(story, req.body.translatedFields.translationLanguage)
+      ) {
+        const error = new ErrorResponse({
+          message: `Story id: ${req.params.storyId} is already translated in ${req.body.translatedFields.translationLanguage}`,
+          statusCode: HttpStatusCode.CONFLICT,
+        });
+        return next(error);
+      }
+
+      const updatedStory = await StoryModel.findByIdAndUpdate(
         req.params.storyId,
         {
           $set: {
-            ["translations." + req.body.language]: req.body.translatedFields,
+            ["translations." + req.body.translatedFields.translationLanguage]:
+              req.body.translatedFields,
           },
         },
         { returnDocument: "after" }
       );
 
-      res.status(HttpStatusCode.OK).json({ success: true, data: story });
+      res.status(HttpStatusCode.OK).json({ success: true, data: updatedStory });
     } catch (error) {
       next(error);
     }

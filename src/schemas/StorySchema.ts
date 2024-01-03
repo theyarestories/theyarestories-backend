@@ -7,6 +7,10 @@ import { Schema, model } from "mongoose";
 
 const TranslatedSchema = new Schema<StoryTranslatedFields>(
   {
+    translationLanguage: {
+      type: String,
+      required: [true, "Please add translation language"],
+    },
     protagonist: {
       type: String,
       required: [true, "Please add protagonist name"],
@@ -99,6 +103,10 @@ export const StorySchema = new Schema<IStory>(
       of: Number,
       required: false,
       default: {},
+    },
+    translationLanguage: {
+      type: String,
+      required: [true, "Please add translation language"],
     },
     translations: {
       type: Schema.Types.Map,
