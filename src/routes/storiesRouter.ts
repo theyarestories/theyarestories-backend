@@ -15,7 +15,6 @@ export default class StoriesRouter {
 
   static init() {
     this.router.get(`/`, advancedResults(StoryModel), this.getStories);
-    this.router.get(`/search/:query`, this.searchStoriesByProtagonist);
     this.router.get(`/:storyId`, this.getSignleStory);
     this.router.post(`/`, this.createStory);
     this.router.put("/:storyId/share", this.incrementStoryShares);
@@ -32,29 +31,6 @@ export default class StoriesRouter {
    */
   static async getStories(req: Request, res: Response) {
     return res.status(HttpStatusCode.OK).json(res.advancedResults);
-  }
-
-  /**
-   * @desc      Search stories by protagonist
-   * @route     GET /api/v1/stories/search/:query
-   * @access    Public
-   */
-  static async searchStoriesByProtagonist(
-    req: Request<{ query: string }>,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const stories = await StoryModel.find({
-        $text: { $search: req.params.query },
-      });
-
-      return res
-        .status(HttpStatusCode.OK)
-        .json({ success: true, data: stories });
-    } catch (error) {
-      return next(error);
-    }
   }
 
   /**

@@ -2,7 +2,6 @@ import { faker } from "@faker-js/faker";
 import { ISeeder } from "@/interfaces/seeder/Seeder";
 import { RegisteringStory } from "@/interfaces/story/IStory";
 import StoryModel from "@/schemas/StorySchema";
-import { Types } from "mongoose";
 
 export default class StoriesSeeder implements ISeeder {
   private defaultCount = 20;
