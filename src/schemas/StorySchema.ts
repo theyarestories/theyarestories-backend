@@ -50,6 +50,11 @@ export const StorySchema = new Schema<IStory>(
       type: String,
       required: [true, "Please add protagonist name"],
     },
+    protagonistTranslations: {
+      type: [String],
+      required: false,
+      default: [],
+    },
     city: {
       type: String,
       required: [true, "Please add city"],

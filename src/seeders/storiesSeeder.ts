@@ -8,8 +8,10 @@ export default class StoriesSeeder implements ISeeder {
   private defaultCount = 20;
 
   private generateStory(): RegisteringStory {
+    const protagonist = faker.internet.displayName();
     const story: RegisteringStory = {
-      protagonist: faker.internet.displayName(),
+      protagonist,
+      protagonistTranslations: [protagonist],
       city: faker.location.city(),
       story: faker.person.bio(),
       avatar: {
