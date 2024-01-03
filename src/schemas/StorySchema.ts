@@ -76,7 +76,10 @@ export const StorySchema = new Schema<IStory>(
     avatar: {
       type: ImageSchema,
       required: false,
-      default: null,
+      default: {
+        cloudinaryId: "y1pfmhr4emnfk2aafwso",
+        url: "https://res.cloudinary.com/dfddvb63i/image/upload/v1704320570/y1pfmhr4emnfk2aafwso.jpg",
+      },
     },
     tags: {
       type: [String],
