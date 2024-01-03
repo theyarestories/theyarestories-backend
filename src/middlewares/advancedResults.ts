@@ -73,6 +73,7 @@ export default function (model: Model<any>) {
       success: true,
       count: results.length,
       totalCount,
+      totalPages: Math.ceil(totalCount / limit),
       pagination,
       data: results,
     };
