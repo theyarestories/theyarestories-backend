@@ -7,6 +7,10 @@ import { Schema, model } from "mongoose";
 
 const TranslatedSchema = new Schema<StoryTranslatedFields>(
   {
+    fromLanguage: {
+      type: String,
+      required: [true, "Please add the language the story translated from"],
+    },
     translationLanguage: {
       type: String,
       required: [true, "Please add translation language"],

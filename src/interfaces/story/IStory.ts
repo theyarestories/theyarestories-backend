@@ -8,6 +8,7 @@ export interface Image {
 export interface StoryTranslatedFields {
   _id: Types.ObjectId;
   translationLanguage: string;
+  fromLanguage: string;
   protagonist: string;
   story: string;
   job?: string;
@@ -18,6 +19,7 @@ export interface StoryTranslatedFields {
 
 export type RegisteringTranslatedFields = {
   translationLanguage: string;
+  fromLanguage: string;
   protagonist: string;
   story: string;
   job?: string;
