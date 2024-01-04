@@ -40,9 +40,7 @@ export type IStory = {
   tags: string[];
   viewsCount: number;
   translationLanguage: String; // ar
-  translations: {
-    [key: string]: StoryTranslatedFields;
-  };
+  translations: StoryTranslatedFields[];
   isApproved: boolean;
   isHighlighted: boolean;
   isDeleted: boolean;
@@ -60,7 +58,5 @@ export type RegisteringStory = {
   age?: number;
   tags?: string[];
   translationLanguage: String; // ar
-  translations: {
-    [key: string]: RegisteringTranslatedFields;
-  };
+  translations: RegisteringTranslatedFields[];
 };

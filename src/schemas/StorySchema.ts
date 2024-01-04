@@ -9,11 +9,11 @@ const TranslatedSchema = new Schema<StoryTranslatedFields>(
   {
     fromLanguage: {
       type: String,
-      required: [true, "Please add the language the story translated from"],
+      required: [true, "Please add the language the story is translated from"],
     },
     translationLanguage: {
       type: String,
-      required: [true, "Please add translation language"],
+      required: [true, "Please add the language the story is translated to"],
     },
     protagonist: {
       type: String,
@@ -121,8 +121,9 @@ export const StorySchema = new Schema<IStory>(
       required: [true, "Please add translation language"],
     },
     translations: {
-      type: Schema.Types.Map,
-      of: TranslatedSchema,
+      // type: Schema.Types.Map,
+      type: [TranslatedSchema],
+      required: [true, "Please add translations array"],
     },
   },
   {

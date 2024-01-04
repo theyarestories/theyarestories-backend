@@ -21,15 +21,15 @@ export default class StoriesSeeder implements ISeeder {
       job: faker.person.jobTitle(),
       tags: ["child"],
       translationLanguage: "en",
-      translations: {
-        en: {
+      translations: [
+        {
           fromLanguage: "en",
           translationLanguage: "en",
           protagonist: faker.internet.displayName(),
           story: faker.person.bio(),
           job: faker.person.jobTitle(),
         },
-      },
+      ],
     };
 
     return story;
