@@ -11,6 +11,7 @@ import ErrorResponse from "@/utils/errorResponse";
 import { IUser, RegisteringUser } from "@/interfaces/user/IUser";
 import { IUserMethods } from "@/interfaces/user/IUserMethods";
 import HttpStatusCode from "@/interfaces/http-status-codes/HttpStatusCode";
+import { protect } from "@/middlewares/protect";
 
 export default class AuthRouter {
   // todo: set logger
@@ -19,6 +20,7 @@ export default class AuthRouter {
   static init(): Router {
     this.router.post("/register", this.register);
     this.router.post("/login", this.login);
+    this.router.get("/me", protect, this.getMe);
 
     return this.router;
   }
@@ -115,5 +117,17 @@ export default class AuthRouter {
     } catch (error) {
       next(error);
     }
+  }
+
+  /**
+   * @desc      Get logged-in user
+   * @route     GET /api/v1/auth/me
+   * @access    Private
+   */
+  private static async getMe(req: Request, res: Response, next: NextFunction) {
+    res.status(200).json({
+      success: true,
+      data: req.user,
+    });
   }
 }

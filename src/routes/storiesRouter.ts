@@ -164,9 +164,9 @@ export default class StoriesRouter {
       const updatedStory = await StoryModel.findByIdAndUpdate(
         req.params.storyId,
         {
-          $set: {
-            ["translations." + req.body.translatedFields.translationLanguage]:
-              req.body.translatedFields,
+          $push: {
+            translations: req.body.translatedFields,
+            protagonistTranslations: req.body.translatedFields.protagonist,
           },
         },
         { returnDocument: "after" }

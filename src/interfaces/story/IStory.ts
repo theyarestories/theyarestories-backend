@@ -8,6 +8,7 @@ export interface Image {
 export interface StoryTranslatedFields {
   _id: Types.ObjectId;
   translationLanguage: string;
+  fromLanguage: string;
   protagonist: string;
   story: string;
   job?: string;
@@ -18,6 +19,7 @@ export interface StoryTranslatedFields {
 
 export type RegisteringTranslatedFields = {
   translationLanguage: string;
+  fromLanguage: string;
   protagonist: string;
   story: string;
   job?: string;
@@ -26,6 +28,7 @@ export type RegisteringTranslatedFields = {
 export type IStory = {
   _id: Types.ObjectId;
   protagonist: string;
+  protagonistTranslations: string[];
   story: string;
   job?: string;
   avatar: Image;
@@ -37,9 +40,7 @@ export type IStory = {
   tags: string[];
   viewsCount: number;
   translationLanguage: String; // ar
-  translations: {
-    [key: string]: StoryTranslatedFields;
-  };
+  translations: StoryTranslatedFields[];
   isApproved: boolean;
   isHighlighted: boolean;
   isDeleted: boolean;
@@ -49,6 +50,7 @@ export type IStory = {
 
 export type RegisteringStory = {
   protagonist: string;
+  protagonistTranslations: string[];
   story: string;
   job?: string;
   city: string;
@@ -56,7 +58,5 @@ export type RegisteringStory = {
   age?: number;
   tags?: string[];
   translationLanguage: String; // ar
-  translations: {
-    [key: string]: RegisteringTranslatedFields;
-  };
+  translations: RegisteringTranslatedFields[];
 };

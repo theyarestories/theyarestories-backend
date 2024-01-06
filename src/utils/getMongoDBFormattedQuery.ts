@@ -4,7 +4,7 @@ import parseNumbersAndBooleans from "./data-formatting/parseBooleanAndNumberStri
 
 function removeReservedParams(query: Query): Query {
   // Fields to exclude
-  const reservedParams = ["select", "sort", "page", "limit"];
+  const reservedParams = ["select", "sort", "page", "limit", "search"];
   const queryCopy = structuredClone(query);
   reservedParams.forEach((param) => delete queryCopy[param]);
   return queryCopy;
@@ -13,7 +13,7 @@ function removeReservedParams(query: Query): Query {
 function addDollarSignToOperators(query: Query): Query {
   let queryString = JSON.stringify(query);
   queryString = queryString.replace(
-    /\b(lt|lte|gt|gte|in)\b/g,
+    /\b(lt|lte|gt|gte|in|text|search)\b/g,
     (match) => "$" + match
   );
   const newQuery = JSON.parse(queryString);

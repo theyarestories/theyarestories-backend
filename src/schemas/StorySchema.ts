@@ -7,9 +7,13 @@ import { Schema, model } from "mongoose";
 
 const TranslatedSchema = new Schema<StoryTranslatedFields>(
   {
+    fromLanguage: {
+      type: String,
+      required: [true, "Please add the language the story is translated from"],
+    },
     translationLanguage: {
       type: String,
-      required: [true, "Please add translation language"],
+      required: [true, "Please add the language the story is translated to"],
     },
     protagonist: {
       type: String,
@@ -50,6 +54,11 @@ export const StorySchema = new Schema<IStory>(
       type: String,
       required: [true, "Please add protagonist name"],
     },
+    protagonistTranslations: {
+      type: [String],
+      required: false,
+      default: [],
+    },
     city: {
       type: String,
       required: [true, "Please add city"],
@@ -71,7 +80,10 @@ export const StorySchema = new Schema<IStory>(
     avatar: {
       type: ImageSchema,
       required: false,
-      default: null,
+      default: {
+        cloudinaryId: "y1pfmhr4emnfk2aafwso",
+        url: "https://res.cloudinary.com/dfddvb63i/image/upload/v1704320570/y1pfmhr4emnfk2aafwso.jpg",
+      },
     },
     tags: {
       type: [String],
@@ -109,8 +121,9 @@ export const StorySchema = new Schema<IStory>(
       required: [true, "Please add translation language"],
     },
     translations: {
-      type: Schema.Types.Map,
-      of: TranslatedSchema,
+      // type: Schema.Types.Map,
+      type: [TranslatedSchema],
+      required: [true, "Please add translations array"],
     },
   },
   {
