@@ -34,7 +34,6 @@ export default class EventsRouter {
     res: Response,
     next: NextFunction
   ) {
-    console.log("🍉", req.body);
     try {
       const event = await EventModel.create(req.body);
 
