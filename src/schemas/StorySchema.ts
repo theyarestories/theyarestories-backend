@@ -1,46 +1,6 @@
-import {
-  IStory,
-  Image,
-  StoryTranslatedFields,
-} from "@/interfaces/story/IStory";
+import { IStory, Image } from "@/interfaces/story/IStory";
 import { Schema, model } from "mongoose";
-
-const TranslatedSchema = new Schema<StoryTranslatedFields>(
-  {
-    fromLanguage: {
-      type: String,
-      required: [true, "Please add the language the story is translated from"],
-    },
-    translationLanguage: {
-      type: String,
-      required: [true, "Please add the language the story is translated to"],
-    },
-    protagonist: {
-      type: String,
-      required: [true, "Please add protagonist name"],
-    },
-    story: {
-      type: String,
-      required: [true, "Please add protagonist story"],
-    },
-    job: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    isApproved: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    approvedBy: {
-      type: String,
-      required: false,
-      default: null,
-    },
-  },
-  { timestamps: true }
-);
+import { TranslationSchema } from "./TranslationSchema";
 
 export const ImageSchema = new Schema<Image>({
   cloudinaryId: {
@@ -132,13 +92,11 @@ export const StorySchema = new Schema<IStory>(
     },
     translations: {
       // type: Schema.Types.Map,
-      type: [TranslatedSchema],
+      type: [TranslationSchema],
       required: [true, "Please add translations array"],
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const StoryModel = model<IStory>("Story", StorySchema);
