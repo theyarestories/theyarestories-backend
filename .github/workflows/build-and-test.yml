@@ -15,6 +15,8 @@ env:
   JWT_SECRET: ${{secrets.JWT_SECRET}}
   MONGO_URI: ${{secrets.MONGO_URI}}
   PORT: ${{secrets.PORT}}
+  FRONTEND_URL: ${{secrets.FRONTEND_URL}}
+  DOPPLER_ENVIRONMENT: ${{secrets.DOPPLER_ENVIRONMENT}}
 
 jobs:
   build:
