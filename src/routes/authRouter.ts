@@ -44,7 +44,7 @@ export default class AuthRouter {
       httpOnly: true, // because we want the cookie to only be accessed through the client-side
     };
 
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.DOPPLER_ENVIRONMENT === "prd") {
       options.secure = true;
     }
 

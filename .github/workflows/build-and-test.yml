@@ -14,7 +14,6 @@ env:
   JWT_EXPIRE: ${{secrets.JWT_EXPIRE}}
   JWT_SECRET: ${{secrets.JWT_SECRET}}
   MONGO_URI: ${{secrets.MONGO_URI}}
-  NODE_ENV: ${{secrets.NODE_ENV}}
   PORT: ${{secrets.PORT}}
 
 jobs:

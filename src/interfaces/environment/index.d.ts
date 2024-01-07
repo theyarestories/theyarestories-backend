@@ -1,13 +1,9 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: "development" | "production";
+      DOPPLER_ENVIRONMENT: "dev" | "stg" | "prd";
       PORT: string;
       MONGO_URI: string;
-      GEOCODER_PROVIDER: string;
-      GEOCODER_API_KEY: string;
-      FILE_UPLOAD_PATH: string;
-      MAX_FILE_UPLOAD: string; // in bytes 1mb = 1000000byte
       JWT_SECRET: string;
       JWT_EXPIRE: string;
       JWT_COOKIE_EXPIRE: string;
