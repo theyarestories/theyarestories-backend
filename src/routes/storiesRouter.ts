@@ -186,7 +186,6 @@ export default class StoriesRouter {
     res: Response,
     next: NextFunction
   ) {
-    console.log("🍉", req.path, req.url, req.baseUrl, req.originalUrl);
     try {
       const updatedStory = await StoryModel.findByIdAndUpdate(
         req.params.id,
