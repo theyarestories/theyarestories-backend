@@ -41,9 +41,16 @@ export default function errorHandler(
     errorResponse = new ErrorResponse({ message, statusCode: 401 });
   }
 
-  H.consumeError(errorResponse, undefined, undefined, {
-    payload: JSON.stringify(errorResponse),
-  });
+  const parsedError = H.parseHeaders(req.headers);
+  H.consumeError(
+    errorResponse,
+    parsedError.secureSessionId,
+    parsedError.requestId,
+    {
+      payload: JSON.stringify(errorResponse),
+      route: req.originalUrl,
+    }
+  );
 
   res.status(errorResponse.statusCode || 500).json({
     success: false,

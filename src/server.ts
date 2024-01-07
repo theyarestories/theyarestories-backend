@@ -6,7 +6,7 @@ const server = http.createServer(app);
 
 server.listen(process.env.PORT, async () => {
   console.log(
-    `App listening in ${process.env.NODE_ENV} mode on http://localhost:${process.env.PORT} 🚀`
+    `App listening in ${process.env.DOPPLER_ENVIRONMENT} mode on http://localhost:${process.env.PORT} 🚀`
   );
   try {
     await connectDB();
