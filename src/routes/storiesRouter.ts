@@ -2,7 +2,7 @@ import { TypedRequestBody } from "@/interfaces/express/TypedRequestBody";
 import { HttpStatusCode } from "axios";
 import {
   RegisteringStory,
-  RegisteringTranslatedFields,
+  RegisteringTranslation,
 } from "@/interfaces/story/IStory";
 import { UserRole } from "@/interfaces/user/IUser";
 import advancedResults from "@/middlewares/advancedResults";
@@ -43,6 +43,13 @@ export default class StoriesRouter {
       verifyDocument(StoryModel),
       this.approveStory
     );
+    this.router.put(
+      "/:id/translations/:translationId/approve",
+      protect,
+      authorize([UserRole.publisher, UserRole.admin]),
+      verifyDocument(StoryModel),
+      this.approveTranslation
+    );
 
     return this.router;
   }
@@ -58,7 +65,7 @@ export default class StoriesRouter {
 
   /**
    * @desc      Gets a single story
-   * @route     GET /api/v1/story/:id
+   * @route     GET /api/v1/stories/:id
    * @access    Public
    */
   static async getSignleStory(req: Request<{ id: string }>, res: Response) {
@@ -67,7 +74,7 @@ export default class StoriesRouter {
 
   /**
    * @desc      Creates a new story
-   * @route     POST /api/v1/story
+   * @route     POST /api/v1/stories
    * @access    Public
    */
   static async createStory(
@@ -86,7 +93,7 @@ export default class StoriesRouter {
 
   /**
    * @desc      Increments the shares count of a story
-   * @route     PUT /api/v1/story/:id/share
+   * @route     PUT /api/v1/stories/:id/share
    * @access    Public
    */
   static async incrementStoryShares(
@@ -109,7 +116,7 @@ export default class StoriesRouter {
 
   /**
    * @desc      Increments the views count of a story
-   * @route     PUT /api/v1/story/:id/view
+   * @route     PUT /api/v1/stories/:id/view
    * @access    Public
    */
   static async incrementStoryViews(
@@ -132,14 +139,14 @@ export default class StoriesRouter {
 
   /**
    * @desc      Adds a story translation
-   * @route     PUT /api/v1/story/:id/translate
+   * @route     PUT /api/v1/stories/:id/translate
    * @access    Public
    */
   static async translateStory(
     req: Request<
       { id: string },
       any,
-      { translatedFields: RegisteringTranslatedFields }
+      { translatedFields: RegisteringTranslation }
     >,
     res: Response,
     next: NextFunction
@@ -178,7 +185,7 @@ export default class StoriesRouter {
 
   /**
    * @desc      Approves a story
-   * @route     PUT /api/v1/story/:id/approve
+   * @route     PUT /api/v1/stories/:id/approve
    * @access    Private
    */
   static async approveStory(
@@ -198,6 +205,37 @@ export default class StoriesRouter {
           },
         },
         { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.Ok).json({ success: true, data: updatedStory });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Approves a translation
+   * @route     PUT /api/v1/stories/:id/translations/:translationId/approve
+   * @access    Private
+   */
+  static async approveTranslation(
+    req: Request<{ id: string; translationId: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const updatedStory = await StoryModel.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: {
+            "translations.$[elem].isApproved": true,
+            "translations.$[elem].approvedBy": req.user?.email || null,
+          },
+        },
+        {
+          arrayFilters: [{ "elem._id": req.params.translationId }],
+          returnDocument: "after",
+        }
       );
 
       res.status(HttpStatusCode.Ok).json({ success: true, data: updatedStory });
