@@ -8,6 +8,7 @@ declare global {
       JWT_EXPIRE: string;
       JWT_COOKIE_EXPIRE: string;
       FRONTEND_URL: string;
+      HIGHLIGHT_PROJECT_ID: string;
     }
   }
 }

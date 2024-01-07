@@ -5,7 +5,7 @@ export interface Image {
   url: string;
 }
 
-export interface StoryTranslatedFields {
+export interface ITranslation {
   _id: Types.ObjectId;
   translationLanguage: string;
   fromLanguage: string;
@@ -13,11 +13,12 @@ export interface StoryTranslatedFields {
   story: string;
   job?: string;
   isApproved: boolean;
+  approvedBy: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
-export type RegisteringTranslatedFields = {
+export type RegisteringTranslation = {
   translationLanguage: string;
   fromLanguage: string;
   protagonist: string;
@@ -40,8 +41,9 @@ export type IStory = {
   tags: string[];
   viewsCount: number;
   translationLanguage: String; // ar
-  translations: StoryTranslatedFields[];
+  translations: ITranslation[];
   isApproved: boolean;
+  approvedBy: string | null;
   isHighlighted: boolean;
   isDeleted: boolean;
   createdAt: string;
@@ -58,5 +60,5 @@ export type RegisteringStory = {
   age?: number;
   tags?: string[];
   translationLanguage: String; // ar
-  translations: RegisteringTranslatedFields[];
+  translations: RegisteringTranslation[];
 };

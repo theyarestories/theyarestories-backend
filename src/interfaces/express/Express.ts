@@ -6,6 +6,7 @@ declare global {
   namespace Express {
     export interface Request {
       user: IUser | null;
+      document?: any;
     }
     export interface Response {
       advancedResults: {
