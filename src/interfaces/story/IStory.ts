@@ -13,6 +13,7 @@ export interface StoryTranslatedFields {
   story: string;
   job?: string;
   isApproved: boolean;
+  approvedBy: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -42,6 +43,7 @@ export type IStory = {
   translationLanguage: String; // ar
   translations: StoryTranslatedFields[];
   isApproved: boolean;
+  approvedBy: string | null;
   isHighlighted: boolean;
   isDeleted: boolean;
   createdAt: string;

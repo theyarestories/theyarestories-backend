@@ -2,7 +2,7 @@ import { Model, model, Schema } from "mongoose";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { IUser } from "@/interfaces/user/IUser";
+import { IUser, UserRole } from "@/interfaces/user/IUser";
 import { IUserMethods } from "@/interfaces/user/IUserMethods";
 import emailValidationRegex from "@/utils/regex/emailValidationRegex";
 
@@ -23,8 +23,8 @@ export const UserSchema = new Schema<IUser, IUserModel>(
     },
     role: {
       type: String,
-      enum: ["user", "publisher"],
-      default: "user",
+      enum: Object.values(UserRole),
+      default: UserRole.user,
     },
     password: {
       type: String,

@@ -33,6 +33,11 @@ const TranslatedSchema = new Schema<StoryTranslatedFields>(
       required: false,
       default: false,
     },
+    approvedBy: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   { timestamps: true }
 );
@@ -99,6 +104,11 @@ export const StorySchema = new Schema<IStory>(
       type: Boolean,
       required: false,
       default: false,
+    },
+    approvedBy: {
+      type: String,
+      required: false,
+      default: null,
     },
     isHighlighted: {
       type: Boolean,
