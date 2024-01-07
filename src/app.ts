@@ -5,15 +5,12 @@ import expressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import hpp from "hpp";
-// import xss from "xss-clean";
 import cors, { CorsOptions } from "cors";
-// import authRouter from "@/routes/authRouter";
-// import usersRouter from "@/routes/usersRouter";
 import errorHandler from "@/middlewares/errorHandler";
 import StoriesRouter from "./routes/storiesRouter";
 import AuthRouter from "./routes/authRouter";
 import EventsRouter from "./routes/eventsRouter";
-// import reviewsRouter from "./routes/reviewsRouter";
+import initHighlight from "./utils/highlight/initHighlight";
 
 const app: Application = express();
 
@@ -74,5 +71,8 @@ app.use("/api/v1/events", EventsRouter.init());
 
 // error handling
 app.use(errorHandler);
+
+// Initialize monitoring
+initHighlight();
 
 export default app;

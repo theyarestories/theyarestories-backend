@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import ErrorResponse from "../utils/errorResponse";
+import { H } from "@highlight-run/node";
 
 export default function errorHandler(
   error: ErrorResponse,
@@ -39,6 +40,10 @@ export default function errorHandler(
     const message = `${error.name}: ${error.message}`;
     errorResponse = new ErrorResponse({ message, statusCode: 401 });
   }
+
+  H.consumeError(errorResponse, undefined, undefined, {
+    payload: JSON.stringify(errorResponse),
+  });
 
   res.status(errorResponse.statusCode || 500).json({
     success: false,
