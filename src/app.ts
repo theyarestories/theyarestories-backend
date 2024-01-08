@@ -1,7 +1,6 @@
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
 import path from "path";
-import expressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import hpp from "hpp";
@@ -29,15 +28,8 @@ app.use(express.json());
 // Cookie parser
 app.use(cookieParser());
 
-// sanitize data
-app.use(expressMongoSanitize());
-
 // add security headers
 app.use(helmet());
-
-// sanitize user input
-// someone creates a bootcamp with the name: "someBootcamp <script></script>"
-// app.use(xss());
 
 // Rate limiting
 const limiter = rateLimit({
