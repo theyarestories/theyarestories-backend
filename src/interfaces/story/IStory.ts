@@ -24,6 +24,8 @@ export type RegisteringTranslation = {
   protagonist: string;
   story: string;
   job?: string;
+  isApproved?: boolean;
+  approvedBy?: string;
 };
 
 export type IStory = {
@@ -59,6 +61,8 @@ export type RegisteringStory = {
   avatar?: Image;
   age?: number;
   tags?: string[];
+  isApproved?: boolean;
+  approvedBy?: string;
   translationLanguage: String; // ar
   translations: RegisteringTranslation[];
 };
