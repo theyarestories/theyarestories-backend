@@ -189,21 +189,21 @@ export default class StoriesRouter {
    * @access    Private
    */
   static async approveStory(
-    req: Request<{ id: string }>,
+    req: Request<{ id: string }, any, RegisteringStory>,
     res: Response,
     next: NextFunction
   ) {
+    // 1. Add approve props
+    const registeringStory = req.body;
+    registeringStory.isApproved = true;
+    registeringStory.approvedBy = req.user?.email;
+    registeringStory.translations[0].isApproved = true;
+    registeringStory.translations[0].approvedBy = req.user?.email;
+
     try {
       const updatedStory = await StoryModel.findByIdAndUpdate(
         req.params.id,
-        {
-          $set: {
-            isApproved: true,
-            approvedBy: req.user?.email || null,
-            "translations.$[].isApproved": true,
-            "translations.$[].approvedBy": req.user?.email || null,
-          },
-        },
+        registeringStory,
         { returnDocument: "after" }
       );
 
@@ -219,7 +219,11 @@ export default class StoriesRouter {
    * @access    Private
    */
   static async approveTranslation(
-    req: Request<{ id: string; translationId: string }>,
+    req: Request<
+      { id: string; translationId: string },
+      any,
+      RegisteringTranslation
+    >,
     res: Response,
     next: NextFunction
   ) {
@@ -228,6 +232,9 @@ export default class StoriesRouter {
         req.params.id,
         {
           $set: {
+            "translations.$[elem].protagonist": req.body.protagonist,
+            "translations.$[elem].story": req.body.story,
+            "translations.$[elem].job": req.body.job,
             "translations.$[elem].isApproved": true,
             "translations.$[elem].approvedBy": req.user?.email || null,
           },

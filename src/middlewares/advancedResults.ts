@@ -39,7 +39,7 @@ export default function (model: Model<any>) {
       const limit = req.query.limit ? parseInt(req.query.limit) : 25;
       const startIndex = (page - 1) * limit;
       const endIndex = page * limit;
-      const totalCount = await model.countDocuments();
+      const totalCount = await model.countDocuments(formattedQuery);
 
       query = query.skip(startIndex).limit(limit);
 
