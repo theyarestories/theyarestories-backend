@@ -10,7 +10,7 @@ import UserModel from "@/schemas/UserSchema";
 import ErrorResponse from "@/utils/errorResponse";
 import { IUser, RegisteringUser } from "@/interfaces/user/IUser";
 import { IUserMethods } from "@/interfaces/user/IUserMethods";
-import HttpStatusCode from "@/interfaces/http-status-codes/HttpStatusCode";
+import { HttpStatusCode } from "axios";
 import { protect } from "@/middlewares/protect";
 
 export default class AuthRouter {
@@ -44,7 +44,7 @@ export default class AuthRouter {
       httpOnly: true, // because we want the cookie to only be accessed through the client-side
     };
 
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.DOPPLER_ENVIRONMENT === "prd") {
       options.secure = true;
     }
 
@@ -67,7 +67,7 @@ export default class AuthRouter {
   ) {
     try {
       const user = await UserModel.create(req.body);
-      AuthRouter.sendTokenResponse(user, HttpStatusCode.CREATED, res);
+      AuthRouter.sendTokenResponse(user, HttpStatusCode.Created, res);
     } catch (error) {
       next(error);
     }
@@ -85,7 +85,7 @@ export default class AuthRouter {
     if (!email || !password) {
       const error = new ErrorResponse({
         message: "Please provide an email and password",
-        statusCode: HttpStatusCode.BAD_REQUEST,
+        statusCode: HttpStatusCode.BadRequest,
       });
       return next(error);
     }
@@ -97,7 +97,7 @@ export default class AuthRouter {
       if (!user) {
         const error = new ErrorResponse({
           message: "Invalid credentials",
-          statusCode: HttpStatusCode.UNAUTHORIZED,
+          statusCode: HttpStatusCode.Unauthorized,
         });
         return next(error);
       }
@@ -108,12 +108,12 @@ export default class AuthRouter {
       if (!passwordIsMatch) {
         const error = new ErrorResponse({
           message: "Invalid credentials",
-          statusCode: HttpStatusCode.UNAUTHORIZED,
+          statusCode: HttpStatusCode.Unauthorized,
         });
         return next(error);
       }
 
-      AuthRouter.sendTokenResponse(user, HttpStatusCode.OK, res);
+      AuthRouter.sendTokenResponse(user, HttpStatusCode.Ok, res);
     } catch (error) {
       next(error);
     }

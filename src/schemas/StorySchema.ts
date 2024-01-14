@@ -1,37 +1,6 @@
-import {
-  IStory,
-  Image,
-  StoryTranslatedFields,
-} from "@/interfaces/story/IStory";
+import { IStory, Image } from "@/interfaces/story/IStory";
 import { Schema, model } from "mongoose";
-
-const TranslatedSchema = new Schema<StoryTranslatedFields>(
-  {
-    translationLanguage: {
-      type: String,
-      required: [true, "Please add translation language"],
-    },
-    protagonist: {
-      type: String,
-      required: [true, "Please add protagonist name"],
-    },
-    story: {
-      type: String,
-      required: [true, "Please add protagonist story"],
-    },
-    job: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    isApproved: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-  { timestamps: true }
-);
+import { TranslationSchema } from "./TranslationSchema";
 
 export const ImageSchema = new Schema<Image>({
   cloudinaryId: {
@@ -49,6 +18,11 @@ export const StorySchema = new Schema<IStory>(
     protagonist: {
       type: String,
       required: [true, "Please add protagonist name"],
+    },
+    protagonistTranslations: {
+      type: [String],
+      required: false,
+      default: [],
     },
     city: {
       type: String,
@@ -71,7 +45,10 @@ export const StorySchema = new Schema<IStory>(
     avatar: {
       type: ImageSchema,
       required: false,
-      default: null,
+      default: {
+        cloudinaryId: "y1pfmhr4emnfk2aafwso",
+        url: "https://res.cloudinary.com/dfddvb63i/image/upload/v1704320570/y1pfmhr4emnfk2aafwso.jpg",
+      },
     },
     tags: {
       type: [String],
@@ -87,6 +64,11 @@ export const StorySchema = new Schema<IStory>(
       type: Boolean,
       required: false,
       default: false,
+    },
+    approvedBy: {
+      type: String,
+      required: false,
+      default: null,
     },
     isHighlighted: {
       type: Boolean,
@@ -109,13 +91,12 @@ export const StorySchema = new Schema<IStory>(
       required: [true, "Please add translation language"],
     },
     translations: {
-      type: Schema.Types.Map,
-      of: TranslatedSchema,
+      // type: Schema.Types.Map,
+      type: [TranslationSchema],
+      required: [true, "Please add translations array"],
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const StoryModel = model<IStory>("Story", StorySchema);

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import ErrorResponse from "../utils/errorResponse";
 import asyncHandler from "../utils/asyncHandler";
-import HttpStatusCode from "@/interfaces/http-status-codes/HttpStatusCode";
+import { HttpStatusCode } from "axios";
 import UserModel from "@/schemas/UserSchema";
 
 interface JwtPayload {
@@ -35,7 +35,7 @@ export const protect = asyncHandler(async function (
   if (!token || token === "null" || token === "none") {
     const error = new ErrorResponse({
       message: "Not authorized to access this route",
-      statusCode: 401,
+      statusCode: HttpStatusCode.Unauthorized,
     });
     return next(error);
   }
@@ -51,7 +51,7 @@ export const protect = asyncHandler(async function (
     if (!user) {
       const error = new ErrorResponse({
         message: `User with id: ${id} doesn't exist`,
-        statusCode: HttpStatusCode.NOT_FOUND,
+        statusCode: HttpStatusCode.NotFound,
       });
       return next(error);
     }

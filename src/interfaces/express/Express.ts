@@ -6,6 +6,7 @@ declare global {
   namespace Express {
     export interface Request {
       user: IUser | null;
+      document?: any;
     }
     export interface Response {
       advancedResults: {
@@ -13,10 +14,9 @@ declare global {
         count: number;
         totalCount: number;
         pagination: {
-          [key: string]: {
-            page: number;
-            limit: number;
-          };
+          currentPage: number;
+          totalPages: number;
+          limit: number;
         };
         data: any;
       };

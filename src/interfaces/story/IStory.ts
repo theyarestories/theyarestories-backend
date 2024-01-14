@@ -5,27 +5,33 @@ export interface Image {
   url: string;
 }
 
-export interface StoryTranslatedFields {
+export interface ITranslation {
   _id: Types.ObjectId;
   translationLanguage: string;
+  fromLanguage: string;
   protagonist: string;
   story: string;
   job?: string;
   isApproved: boolean;
+  approvedBy: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
-export type RegisteringTranslatedFields = {
+export type RegisteringTranslation = {
   translationLanguage: string;
+  fromLanguage: string;
   protagonist: string;
   story: string;
   job?: string;
+  isApproved?: boolean;
+  approvedBy?: string;
 };
 
 export type IStory = {
   _id: Types.ObjectId;
   protagonist: string;
+  protagonistTranslations: string[];
   story: string;
   job?: string;
   avatar: Image;
@@ -37,10 +43,9 @@ export type IStory = {
   tags: string[];
   viewsCount: number;
   translationLanguage: String; // ar
-  translations: {
-    [key: string]: StoryTranslatedFields;
-  };
+  translations: ITranslation[];
   isApproved: boolean;
+  approvedBy: string | null;
   isHighlighted: boolean;
   isDeleted: boolean;
   createdAt: string;
@@ -49,14 +54,15 @@ export type IStory = {
 
 export type RegisteringStory = {
   protagonist: string;
+  protagonistTranslations: string[];
   story: string;
   job?: string;
   city: string;
   avatar?: Image;
   age?: number;
   tags?: string[];
+  isApproved?: boolean;
+  approvedBy?: string;
   translationLanguage: String; // ar
-  translations: {
-    [key: string]: RegisteringTranslatedFields;
-  };
+  translations: RegisteringTranslation[];
 };

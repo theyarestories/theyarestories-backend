@@ -1,18 +1,15 @@
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
 import path from "path";
-import expressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import hpp from "hpp";
-// import xss from "xss-clean";
 import cors, { CorsOptions } from "cors";
-// import authRouter from "@/routes/authRouter";
-// import usersRouter from "@/routes/usersRouter";
 import errorHandler from "@/middlewares/errorHandler";
 import StoriesRouter from "./routes/storiesRouter";
 import AuthRouter from "./routes/authRouter";
-// import reviewsRouter from "./routes/reviewsRouter";
+import EventsRouter from "./routes/eventsRouter";
+import initHighlight from "./utils/highlight/initHighlight";
 
 const app: Application = express();
 
@@ -31,15 +28,8 @@ app.use(express.json());
 // Cookie parser
 app.use(cookieParser());
 
-// sanitize data
-app.use(expressMongoSanitize());
-
 // add security headers
 app.use(helmet());
-
-// sanitize user input
-// someone creates a bootcamp with the name: "someBootcamp <script></script>"
-// app.use(xss());
 
 // Rate limiting
 const limiter = rateLimit({
@@ -57,6 +47,7 @@ const corsOptions: CorsOptions = {
     process.env.FRONTEND_URL,
     "http://127.0.0.1",
     /^.*localhost.*$/,
+    /.*theyarestories.*/,
     // your origins here
   ],
   credentials: true,
@@ -69,8 +60,12 @@ app.use(express.static(path.join(__dirname, "public")));
 // mount routers
 app.use("/api/v1/stories", StoriesRouter.init());
 app.use("/api/v1/auth", AuthRouter.init());
+app.use("/api/v1/events", EventsRouter.init());
 
 // error handling
 app.use(errorHandler);
+
+// Initialize monitoring
+initHighlight();
 
 export default app;

@@ -19,6 +19,10 @@ class GlobalSeeder implements ISeeder {
   }
 
   async run(): Promise<void> {
+    if (process.env.DOPPLER_ENVIRONMENT === "prd") {
+      throw new Error(`Can't run the seeder on production environment`);
+    }
+
     await connectDB();
 
     const command = process.argv[2] as Command;

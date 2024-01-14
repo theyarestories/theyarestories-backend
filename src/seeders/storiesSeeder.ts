@@ -2,14 +2,15 @@ import { faker } from "@faker-js/faker";
 import { ISeeder } from "@/interfaces/seeder/Seeder";
 import { RegisteringStory } from "@/interfaces/story/IStory";
 import StoryModel from "@/schemas/StorySchema";
-import { Types } from "mongoose";
 
 export default class StoriesSeeder implements ISeeder {
   private defaultCount = 20;
 
   private generateStory(): RegisteringStory {
+    const protagonist = faker.internet.displayName();
     const story: RegisteringStory = {
-      protagonist: faker.internet.displayName(),
+      protagonist,
+      protagonistTranslations: [protagonist],
       city: faker.location.city(),
       story: faker.person.bio(),
       avatar: {
@@ -20,14 +21,15 @@ export default class StoriesSeeder implements ISeeder {
       job: faker.person.jobTitle(),
       tags: ["child"],
       translationLanguage: "en",
-      translations: {
-        en: {
+      translations: [
+        {
+          fromLanguage: "en",
           translationLanguage: "en",
           protagonist: faker.internet.displayName(),
           story: faker.person.bio(),
           job: faker.person.jobTitle(),
         },
-      },
+      ],
     };
 
     return story;

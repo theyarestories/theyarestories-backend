@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import ErrorResponse from "../utils/errorResponse";
+import { H } from "@highlight-run/node";
 
 export default function errorHandler(
   error: ErrorResponse,
@@ -39,6 +40,17 @@ export default function errorHandler(
     const message = `${error.name}: ${error.message}`;
     errorResponse = new ErrorResponse({ message, statusCode: 401 });
   }
+
+  const parsedError = H.parseHeaders(req.headers);
+  H.consumeError(
+    errorResponse,
+    parsedError.secureSessionId,
+    parsedError.requestId,
+    {
+      payload: JSON.stringify(errorResponse),
+      route: req.originalUrl,
+    }
+  );
 
   res.status(errorResponse.statusCode || 500).json({
     success: false,
