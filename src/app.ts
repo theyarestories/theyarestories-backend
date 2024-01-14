@@ -56,6 +56,7 @@ const corsOptions: CorsOptions = {
   origin: [
     process.env.FRONTEND_URL,
     "http://127.0.0.1",
+    /^.*localhost.*$/,
     // your origins here
   ],
   credentials: true,
