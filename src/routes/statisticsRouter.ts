@@ -10,8 +10,8 @@ export default class StatisticsRouter {
   static init() {
     this.router.get("/", this.getStatistics);
     this.router.post("/", this.createStatistic);
-    this.router.put("/views", this.incrementStoriesViews);
-    this.router.put("/visits", this.incrementVisits);
+    this.router.put("/increment-stories-views", this.incrementStoriesViews);
+    this.router.put("/increment-visits", this.incrementVisits);
 
     return this.router;
   }
