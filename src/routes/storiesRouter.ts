@@ -13,6 +13,7 @@ import ErrorResponse from "@/utils/errorResponse";
 import storyHasLanguage from "@/utils/stories/storyHasLanguage";
 import { NextFunction, Request, Response, Router } from "express";
 import verifyDocument from "@/middlewares/verifyDocument";
+import StatisticModel from "@/schemas/StatisticSchema";
 
 export default class StoriesRouter {
   static router = Router();
@@ -201,11 +202,15 @@ export default class StoriesRouter {
     registeringStory.translations[0].approvedBy = req.user?.email;
 
     try {
+      // 2. update story to be approved
       const updatedStory = await StoryModel.findByIdAndUpdate(
         req.params.id,
         registeringStory,
         { returnDocument: "after" }
       );
+
+      // 3. update statistics
+      await StatisticModel.updateMany({}, { $inc: { writeStoryCount: 1 } });
 
       res.status(HttpStatusCode.Ok).json({ success: true, data: updatedStory });
     } catch (error) {
@@ -244,6 +249,9 @@ export default class StoriesRouter {
           returnDocument: "after",
         }
       );
+
+      // update statistics
+      await StatisticModel.updateMany({}, { $inc: { translateStoryCount: 1 } });
 
       res.status(HttpStatusCode.Ok).json({ success: true, data: updatedStory });
     } catch (error) {
