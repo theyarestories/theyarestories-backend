@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
-import { IEvent } from "@/interfaces/event/IEvent";
+import { EventType, IEvent } from "@/interfaces/event/IEvent";
 
 export const EventSchema = new Schema<IEvent>(
   {
     type: {
       type: String,
-      enum: ["visit"],
+      enum: Object.values(EventType),
       required: [true, "Please, add the event type"],
     },
     metadata: {
