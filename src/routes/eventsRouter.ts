@@ -86,7 +86,7 @@ export default class EventsRouter {
           type: EventType.write_story,
           "metadata.storyId": story._id,
         });
-        if (!createEvent) {
+        if (!createEvent && story.isApproved) {
           await EventModel.create({
             type: EventType.write_story,
             metadata: {
@@ -102,7 +102,7 @@ export default class EventsRouter {
             type: EventType.translate_story,
             "metadata.translationId": translation._id,
           });
-          if (!translationEvent) {
+          if (!translationEvent && translation.isApproved) {
             await EventModel.create({
               type: EventType.translate_story,
               metadata: {
