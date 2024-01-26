@@ -10,6 +10,7 @@ export default class EventsRouter {
 
   static init() {
     this.router.get("/", advancedResults(EventModel), this.getEvents);
+    this.router.get("/statistics", this.getEventsStatistics);
     this.router.post("/", this.createEvent);
 
     return this.router;
@@ -22,6 +23,34 @@ export default class EventsRouter {
    */
   static async getEvents(req: Request, res: Response) {
     return res.status(HttpStatusCode.Ok).json(res.advancedResults);
+  }
+
+  /**
+   * @desc      Gets events statistics
+   * @route     GET /api/v1/events/statistics
+   * @access    Public
+   */
+  static async getEventsStatistics(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      let result = await EventModel.aggregate([
+        { $match: { type: { $exists: true } } },
+        { $group: { _id: "$type", count: { $count: {} } } },
+      ]);
+      result = result.reduce(
+        (prev, curr) => Object.assign(prev, { [curr._id]: curr.count }),
+        {}
+      );
+      return res.status(HttpStatusCode.Ok).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 
   /**
