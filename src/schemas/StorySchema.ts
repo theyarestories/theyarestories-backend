@@ -1,7 +1,7 @@
 import { IStory } from "@/interfaces/story/IStory";
 import { Schema, model } from "mongoose";
 import { TranslationSchema } from "./TranslationSchema";
-import { LikeSchema } from "./LikeSchema";
+import { EmojiSchema } from "./EmojiSchema";
 import { ImageSchema } from "./ImageSchema";
 
 export const StorySchema = new Schema<IStory>(
@@ -71,8 +71,8 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: false,
     },
-    likes: {
-      type: [LikeSchema],
+    emojis: {
+      type: [EmojiSchema],
       required: false,
       default: [],
     },

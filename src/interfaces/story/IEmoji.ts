@@ -1,6 +1,6 @@
 import { EmojiType } from "./EmojiType";
 
-export interface ILike {
+export interface IEmoji {
   userId: string;
-  emoji: EmojiType;
+  emojiType: EmojiType;
 }
