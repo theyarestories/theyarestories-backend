@@ -151,12 +151,21 @@ export default class StoriesRouter {
   ) {
     try {
       const isEmojied = req.document.emojis.some(
-        (emoji: IEmoji) => emoji.userId === req.body.userId
+        (emoji: IEmoji) =>
+          emoji.userId === req.body.userId &&
+          emoji.emojiType === req.body.emojiType
       );
       const story = await StoryModel.findByIdAndUpdate(
         req.params.id,
         isEmojied
-          ? { $pull: { emojis: { userId: req.body.userId } } }
+          ? {
+              $pull: {
+                emojis: {
+                  userId: req.body.userId,
+                  emojiType: req.body.emojiType,
+                },
+              },
+            }
           : { $push: { emojis: req.body } },
         { returnDocument: "after" }
       );
