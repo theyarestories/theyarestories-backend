@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ILike } from "./ILike";
+import { IEmoji } from "./IEmoji";
 import { IImage } from "./IImage";
 
 export interface ITranslation {
@@ -34,7 +34,7 @@ export type IStory = {
   avatar: IImage;
   city: string;
   age: number | null;
-  likes: ILike[];
+  emojis: IEmoji[];
   shares: {
     [key: string]: number;
   };

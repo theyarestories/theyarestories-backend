@@ -13,7 +13,7 @@ import ErrorResponse from "@/utils/errorResponse";
 import storyHasLanguage from "@/utils/stories/storyHasLanguage";
 import { NextFunction, Request, Response, Router } from "express";
 import verifyDocument from "@/middlewares/verifyDocument";
-import { ILike } from "@/interfaces/story/ILike";
+import { IEmoji } from "@/interfaces/story/IEmoji";
 
 export default class StoriesRouter {
   static router = Router();
@@ -32,7 +32,7 @@ export default class StoriesRouter {
       verifyDocument(StoryModel),
       this.incrementStoryViews
     );
-    this.router.put("/:id/like", verifyDocument(StoryModel), this.likeStory);
+    this.router.put("/:id/emoji", verifyDocument(StoryModel), this.emojiStory);
     this.router.put(
       "/:id/translate",
       verifyDocument(StoryModel),
@@ -140,24 +140,24 @@ export default class StoriesRouter {
   }
 
   /**
-   * @desc      Likes a story
-   * @route     PUT /api/v1/stories/:id/like
+   * @desc      Emojies a story
+   * @route     PUT /api/v1/stories/:id/emoji
    * @access    Public
    */
-  static async likeStory(
-    req: Request<{ id: string }, any, ILike>,
+  static async emojiStory(
+    req: Request<{ id: string }, any, IEmoji>,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const isLiked = req.document.likes.some(
-        (like: ILike) => like.userId === req.body.userId
+      const isEmojied = req.document.emojies.some(
+        (emoji: IEmoji) => emoji.userId === req.body.userId
       );
       const story = await StoryModel.findByIdAndUpdate(
         req.params.id,
-        isLiked
-          ? { $pull: { likes: { userId: req.body.userId } } }
-          : { $push: { likes: req.body } },
+        isEmojied
+          ? { $pull: { emojis: { userId: req.body.userId } } }
+          : { $push: { emojis: req.body } },
         { returnDocument: "after" }
       );
 
