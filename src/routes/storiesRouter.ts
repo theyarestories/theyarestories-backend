@@ -150,7 +150,7 @@ export default class StoriesRouter {
     next: NextFunction
   ) {
     try {
-      const isEmojied = req.document.emojies.some(
+      const isEmojied = req.document.emojis.some(
         (emoji: IEmoji) => emoji.userId === req.body.userId
       );
       const story = await StoryModel.findByIdAndUpdate(
