@@ -13,6 +13,7 @@ import ErrorResponse from "@/utils/errorResponse";
 import storyHasLanguage from "@/utils/stories/storyHasLanguage";
 import { NextFunction, Request, Response, Router } from "express";
 import verifyDocument from "@/middlewares/verifyDocument";
+import { ILike } from "@/interfaces/story/ILike";
 
 export default class StoriesRouter {
   static router = Router();
@@ -121,6 +122,29 @@ export default class StoriesRouter {
    */
   static async incrementStoryViews(
     req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const story = await StoryModel.findByIdAndUpdate(
+        req.params.id,
+        { $inc: { viewsCount: 1 } },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.Ok).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Likes a story
+   * @route     PUT /api/v1/stories/:id/like
+   * @access    Public
+   */
+  static async likeStory(
+    req: Request<{ id: string }, any, ILike>,
     res: Response,
     next: NextFunction
   ) {
