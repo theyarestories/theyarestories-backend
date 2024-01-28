@@ -6,6 +6,7 @@ export const LikeSchema = new Schema<ILike>(
   {
     userId: {
       type: String,
+      unique: true,
       required: [true, "Please add user ID"],
     },
     emoji: {

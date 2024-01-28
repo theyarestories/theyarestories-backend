@@ -32,6 +32,7 @@ export default class StoriesRouter {
       verifyDocument(StoryModel),
       this.incrementStoryViews
     );
+    this.router.put("/:id/like", verifyDocument(StoryModel), this.likeStory);
     this.router.put(
       "/:id/translate",
       verifyDocument(StoryModel),
@@ -149,9 +150,14 @@ export default class StoriesRouter {
     next: NextFunction
   ) {
     try {
+      const isLiked = req.document.likes.some(
+        (like: ILike) => like.userId === req.body.userId
+      );
       const story = await StoryModel.findByIdAndUpdate(
         req.params.id,
-        { $inc: { viewsCount: 1 } },
+        isLiked
+          ? { $pull: { likes: { userId: req.body.userId } } }
+          : { $push: { likes: req.body } },
         { returnDocument: "after" }
       );
 
