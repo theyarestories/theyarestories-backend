@@ -13,6 +13,7 @@ import ErrorResponse from "@/utils/errorResponse";
 import storyHasLanguage from "@/utils/stories/storyHasLanguage";
 import { NextFunction, Request, Response, Router } from "express";
 import verifyDocument from "@/middlewares/verifyDocument";
+import { ILike } from "@/interfaces/story/ILike";
 
 export default class StoriesRouter {
   static router = Router();
@@ -31,6 +32,7 @@ export default class StoriesRouter {
       verifyDocument(StoryModel),
       this.incrementStoryViews
     );
+    this.router.put("/:id/like", verifyDocument(StoryModel), this.likeStory);
     this.router.put(
       "/:id/translate",
       verifyDocument(StoryModel),
@@ -128,6 +130,34 @@ export default class StoriesRouter {
       const story = await StoryModel.findByIdAndUpdate(
         req.params.id,
         { $inc: { viewsCount: 1 } },
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.Ok).json({ success: true, data: story });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Likes a story
+   * @route     PUT /api/v1/stories/:id/like
+   * @access    Public
+   */
+  static async likeStory(
+    req: Request<{ id: string }, any, ILike>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const isLiked = req.document.likes.some(
+        (like: ILike) => like.userId === req.body.userId
+      );
+      const story = await StoryModel.findByIdAndUpdate(
+        req.params.id,
+        isLiked
+          ? { $pull: { likes: { userId: req.body.userId } } }
+          : { $push: { likes: req.body } },
         { returnDocument: "after" }
       );
 

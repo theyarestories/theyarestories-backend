@@ -1,17 +1,8 @@
-import { IStory, Image } from "@/interfaces/story/IStory";
+import { IStory } from "@/interfaces/story/IStory";
 import { Schema, model } from "mongoose";
 import { TranslationSchema } from "./TranslationSchema";
-
-export const ImageSchema = new Schema<Image>({
-  cloudinaryId: {
-    type: String,
-    required: [true, "Please add image Cloudinary ID"],
-  },
-  url: {
-    type: String,
-    required: [true, "Please add image URL"],
-  },
-});
+import { LikeSchema } from "./LikeSchema";
+import { ImageSchema } from "./ImageSchema";
 
 export const StorySchema = new Schema<IStory>(
   {
@@ -80,6 +71,11 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: false,
     },
+    likes: {
+      type: [LikeSchema],
+      required: false,
+      default: [],
+    },
     shares: {
       type: Schema.Types.Map,
       of: Number,
@@ -91,7 +87,6 @@ export const StorySchema = new Schema<IStory>(
       required: [true, "Please add translation language"],
     },
     translations: {
-      // type: Schema.Types.Map,
       type: [TranslationSchema],
       required: [true, "Please add translations array"],
     },
