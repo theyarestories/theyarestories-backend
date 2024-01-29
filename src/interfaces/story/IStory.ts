@@ -1,9 +1,6 @@
 import { Types } from "mongoose";
-
-export interface Image {
-  cloudinaryId: string;
-  url: string;
-}
+import { IEmoji } from "./IEmoji";
+import { IImage } from "./IImage";
 
 export interface ITranslation {
   _id: Types.ObjectId;
@@ -34,9 +31,10 @@ export type IStory = {
   protagonistTranslations: string[];
   story: string;
   job?: string;
-  avatar: Image;
+  avatar: IImage;
   city: string;
   age: number | null;
+  emojis: IEmoji[];
   shares: {
     [key: string]: number;
   };
@@ -58,7 +56,7 @@ export type RegisteringStory = {
   story: string;
   job?: string;
   city: string;
-  avatar?: Image;
+  avatar?: IImage;
   age?: number;
   tags?: string[];
   isApproved?: boolean;
