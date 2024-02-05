@@ -8,6 +8,7 @@ export enum UserRole {
 
 export interface IUser {
   _id: Types.ObjectId;
+  mixpanelId: string;
   username: string;
   email: string;
   password: string;
