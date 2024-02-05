@@ -18,6 +18,7 @@ export interface IUser {
 }
 
 export interface RegisteringUser {
+  mixpanelId: string;
   username: string;
   email: string;
   password: string;
