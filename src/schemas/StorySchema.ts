@@ -15,6 +15,9 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: [],
     },
+    author: {
+      type: String,
+    },
     city: {
       type: String,
       required: [true, "Please add city"],

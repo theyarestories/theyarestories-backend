@@ -11,6 +11,7 @@ export default class StoriesSeeder implements ISeeder {
     const story: RegisteringStory = {
       protagonist,
       protagonistTranslations: [protagonist],
+      author: faker.string.uuid(),
       city: faker.location.city(),
       story: faker.person.bio(),
       avatar: {
@@ -26,6 +27,7 @@ export default class StoriesSeeder implements ISeeder {
           fromLanguage: "en",
           translationLanguage: "en",
           protagonist: faker.internet.displayName(),
+          author: faker.string.uuid(),
           story: faker.person.bio(),
           job: faker.person.jobTitle(),
         },
