@@ -12,6 +12,8 @@ import { IUser, RegisteringUser } from "@/interfaces/user/IUser";
 import { IUserMethods } from "@/interfaces/user/IUserMethods";
 import { HttpStatusCode } from "axios";
 import { protect } from "@/middlewares/protect";
+import StoryModel from "@/schemas/StorySchema";
+import { TypedRequestBody } from "@/interfaces/express/TypedRequestBody";
 
 export default class AuthRouter {
   // todo: set logger
@@ -56,6 +58,39 @@ export default class AuthRouter {
   }
 
   /**
+   * After a user signs in/up
+   * replaces all his Mixpanel IDs in the database
+   * with his actual ID
+   */
+  private static async replaceMixpanelId(
+    mixpanelId: string,
+    userId: string,
+    next: NextFunction
+  ) {
+    try {
+      // Update stories authors
+      await StoryModel.updateMany(
+        { author: mixpanelId },
+        { $set: { author: userId } }
+      );
+      // Update translations authors
+      await StoryModel.updateMany(
+        { "translations.author": mixpanelId },
+        { $set: { "translations.$[elem].author": userId } },
+        { arrayFilters: [{ "elem.author": mixpanelId }] }
+      );
+      // Update emojis' user ID
+      await StoryModel.updateMany(
+        { "emojis.userId": mixpanelId },
+        { $set: { "emojis.$[elem].userId": userId } },
+        { arrayFilters: [{ "elem.userId": mixpanelId }] }
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * @desc      Register user
    * @route     POST /api/v1/auth/register
    * @access    Public: any user can access
@@ -67,6 +102,11 @@ export default class AuthRouter {
   ) {
     try {
       const user = await UserModel.create(req.body);
+      await AuthRouter.replaceMixpanelId(
+        req.body.mixpanelId,
+        user._id.toString(),
+        next
+      );
       AuthRouter.sendTokenResponse(user, HttpStatusCode.Created, res);
     } catch (error) {
       next(error);
@@ -78,7 +118,15 @@ export default class AuthRouter {
    * @route     POST /api/v1/auth/login
    * @access    Public: any user can access
    */
-  private static async login(req: Request, res: Response, next: NextFunction) {
+  private static async login(
+    req: TypedRequestBody<{
+      email: string;
+      password: string;
+      mixpanelId: string;
+    }>,
+    res: Response,
+    next: NextFunction
+  ) {
     const { email, password } = req.body;
 
     // Verify email and password
@@ -113,6 +161,11 @@ export default class AuthRouter {
         return next(error);
       }
 
+      await AuthRouter.replaceMixpanelId(
+        req.body.mixpanelId,
+        user._id.toString(),
+        next
+      );
       AuthRouter.sendTokenResponse(user, HttpStatusCode.Ok, res);
     } catch (error) {
       next(error);
