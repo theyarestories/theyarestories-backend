@@ -10,10 +10,6 @@ export interface IUserModel extends Model<IUser, {}, IUserMethods> {}
 
 export const UserSchema = new Schema<IUser, IUserModel>(
   {
-    mixpanelId: {
-      type: String,
-      required: [true, "Please add Mixpanel ID"],
-    },
     username: {
       type: String,
       required: [true, "Please add a username"],
