@@ -10,6 +10,7 @@ import StoriesRouter from "./routes/storiesRouter";
 import AuthRouter from "./routes/authRouter";
 import EventsRouter from "./routes/eventsRouter";
 import initHighlight from "./utils/highlight/initHighlight";
+import UsersRouter from "./routes/usersRouter";
 
 const app: Application = express();
 
@@ -60,6 +61,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // mount routers
 app.use("/api/v1/stories", StoriesRouter.init());
 app.use("/api/v1/auth", AuthRouter.init());
+app.use("/api/v1/users", UsersRouter.init());
 app.use("/api/v1/events", EventsRouter.init());
 
 // error handling
