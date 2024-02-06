@@ -34,7 +34,6 @@ export const UserSchema = new Schema<IUser, IUserModel>(
     password: {
       type: String,
       required: [true, "Please add a password"],
-      minlength: 6,
       select: false,
     },
   },
