@@ -28,6 +28,11 @@ export const TranslationSchema = new Schema<ITranslation>(
       required: false,
       default: null,
     },
+    isOriginal: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     isApproved: {
       type: Boolean,
       required: false,

@@ -10,6 +10,7 @@ export interface ITranslation {
   author: string;
   story: string;
   job?: string;
+  isOriginal: boolean;
   isApproved: boolean;
   approvedBy: string | null;
   createdAt: string;
@@ -23,6 +24,7 @@ export type RegisteringTranslation = {
   author: string;
   story: string;
   job?: string;
+  isOriginal?: boolean;
   isApproved?: boolean;
   approvedBy?: string;
 };
