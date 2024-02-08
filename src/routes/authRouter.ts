@@ -230,7 +230,6 @@ export default class AuthRouter {
     // Get reset token
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
-    console.log("🍉", resetToken);
 
     // Send email with reset URL
     const emailResult = await sendEmail({
