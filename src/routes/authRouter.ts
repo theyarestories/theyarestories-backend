@@ -94,7 +94,9 @@ export default class AuthRouter {
       // Update viewers
       await StoryModel.updateMany(
         { viewers: mixpanelId },
-        { $pull: { viewers: mixpanelId }, $push: { viewers: userId } }
+        // { $pull: { viewers: mixpanelId }, $push: { viewers: userId } },
+        { $set: { "viewers.$[filter]": userId } },
+        { arrayFilters: [{ filter: mixpanelId }] }
       );
     } catch (error) {
       next(error);
