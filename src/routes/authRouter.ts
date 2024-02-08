@@ -263,7 +263,11 @@ export default class AuthRouter {
    * @access    Private
    */
   private static async resetPassword(
-    req: Request<{ resettoken: string }, never, { password: string }>,
+    req: Request<
+      { resettoken: string },
+      never,
+      { password: string; mixpanelId: string }
+    >,
     res: Response,
     next: NextFunction
   ) {
@@ -289,6 +293,12 @@ export default class AuthRouter {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
+
+    await this.replaceMixpanelId(
+      req.body.mixpanelId,
+      user._id.toString(),
+      next
+    );
 
     return AuthRouter.sendTokenResponse(user, HttpStatusCode.Ok, res);
   }
