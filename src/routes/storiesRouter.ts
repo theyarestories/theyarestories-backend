@@ -28,11 +28,7 @@ export default class StoriesRouter {
       verifyDocument(StoryModel),
       this.incrementStoryShares
     );
-    this.router.put(
-      "/:id/view",
-      verifyDocument(StoryModel),
-      this.incrementStoryViews
-    );
+    this.router.put("/:id/view", verifyDocument(StoryModel), this.viewStory);
     this.router.put("/:id/emoji", verifyDocument(StoryModel), this.emojiStory);
     this.router.put(
       "/:id/translate",
@@ -132,19 +128,19 @@ export default class StoriesRouter {
   }
 
   /**
-   * @desc      Increments the views count of a story
+   * @desc      Adds a viewer to the story
    * @route     PUT /api/v1/stories/:id/view
    * @access    Public
    */
-  static async incrementStoryViews(
-    req: Request<{ id: string }>,
+  static async viewStory(
+    req: Request<{ id: string }, never, { userId: string }>,
     res: Response,
     next: NextFunction
   ) {
     try {
       const story = await StoryModel.findByIdAndUpdate(
         req.params.id,
-        { $inc: { viewsCount: 1 } },
+        { $addToSet: { viewers: req.body.userId } },
         { returnDocument: "after" }
       );
 

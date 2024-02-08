@@ -44,7 +44,7 @@ export type IStory = {
     [key: string]: number;
   };
   tags: string[];
-  viewsCount: number;
+  viewers: string[];
   translationLanguage: String; // ar
   translations: ITranslation[];
   isApproved: boolean;
