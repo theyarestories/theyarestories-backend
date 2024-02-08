@@ -14,6 +14,9 @@ import { HttpStatusCode } from "axios";
 import { protect } from "@/middlewares/protect";
 import StoryModel from "@/schemas/StorySchema";
 import { TypedRequestBody } from "@/interfaces/express/TypedRequestBody";
+import sendEmail from "@/utils/sendEmail";
+import resetPasswordEmailHtml from "@/utils/email-templates/resetPasswordEmailHtml";
+import crypto from "crypto";
 
 export default class AuthRouter {
   // todo: set logger
@@ -22,7 +25,10 @@ export default class AuthRouter {
   static init(): Router {
     this.router.post("/register", this.register);
     this.router.post("/login", this.login);
+    this.router.get("/logout", this.logout);
     this.router.get("/me", protect, this.getMe);
+    this.router.post("/forgotpassword", this.forgotPassword);
+    this.router.put("/resetpassword/:resettoken", this.resetPassword);
 
     return this.router;
   }
@@ -178,9 +184,113 @@ export default class AuthRouter {
    * @access    Private
    */
   private static async getMe(req: Request, res: Response, next: NextFunction) {
-    res.status(200).json({
+    res.status(HttpStatusCode.Ok).json({
       success: true,
       data: req.user,
     });
+  }
+
+  /**
+   * @desc      Log user out
+   * @route     GET /api/v1/auth/logout
+   * @access    Public
+   */
+  private static logout(req: Request, res: Response, next: NextFunction) {
+    res.cookie("token", "none", {
+      expires: new Date(Date.now() + 10 * 1000), // 10 sec
+      httpOnly: true, // because we want the cookie to only be accessed through the client-side
+    });
+
+    res.status(HttpStatusCode.Ok).json({
+      success: true,
+      data: {},
+    });
+  }
+
+  /**
+   * @desc      Forgot password
+   * @route     POST /api/v1/auth/forgotpassword
+   * @access    Public
+   */
+  private static async forgotPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const user = await UserModel.findOne({ email: req.body.email });
+
+    if (!user) {
+      const error = new ErrorResponse({
+        message: "There is no user with that email",
+        statusCode: HttpStatusCode.NotFound,
+      });
+      return next(error);
+    }
+
+    // Get reset token
+    const resetToken = user.getResetPasswordToken();
+    await user.save({ validateBeforeSave: false });
+    console.log("🍉", resetToken);
+
+    // Send email with reset URL
+    const emailResult = await sendEmail({
+      to: [user.email],
+      subject: "Reset your password",
+      html: resetPasswordEmailHtml(
+        `${process.env.FRONTEND_URL}/reset-password/${resetToken}`
+      ),
+    });
+    if (emailResult.isErr()) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      const error = new ErrorResponse({
+        message: emailResult.error.errorMessage,
+        statusCode: HttpStatusCode.InternalServerError,
+      });
+      return next(error);
+    }
+
+    return res.status(HttpStatusCode.Ok).json({
+      success: true,
+      data: user,
+    });
+  }
+
+  /**
+   * @desc      Reset password
+   * @route     PUT /api/v1/auth/resetpassword/:resettoken
+   * @access    Private
+   */
+  private static async resetPassword(
+    req: Request<{ resettoken: string }, never, { password: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    const resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(req.params.resettoken)
+      .digest("hex");
+
+    const user = await UserModel.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      const error = new ErrorResponse({
+        message: "Invalid token",
+        statusCode: HttpStatusCode.BadRequest,
+      });
+      return next(error);
+    }
+
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    return AuthRouter.sendTokenResponse(user, HttpStatusCode.Ok, res);
   }
 }

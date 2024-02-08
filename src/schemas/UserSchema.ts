@@ -36,6 +36,14 @@ export const UserSchema = new Schema<IUser, IUserModel>(
       required: [true, "Please add a password"],
       select: false,
     },
+    resetPasswordToken: {
+      type: String,
+      required: false,
+    },
+    resetPasswordExpire: {
+      type: Date,
+      required: false,
+    },
   },
   {
     timestamps: true,
