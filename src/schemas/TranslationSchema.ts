@@ -15,6 +15,10 @@ export const TranslationSchema = new Schema<ITranslation>(
       type: String,
       required: [true, "Please add protagonist name"],
     },
+    author: {
+      type: String,
+      required: [true, "Please add translation author"],
+    },
     story: {
       type: String,
       required: [true, "Please add protagonist story"],
@@ -23,6 +27,11 @@ export const TranslationSchema = new Schema<ITranslation>(
       type: String,
       required: false,
       default: null,
+    },
+    isOriginal: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     isApproved: {
       type: Boolean,

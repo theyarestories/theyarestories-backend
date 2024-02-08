@@ -15,6 +15,10 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: [],
     },
+    author: {
+      type: String,
+      required: [true, "Please add story author"],
+    },
     city: {
       type: String,
       required: [true, "Please add city"],
@@ -46,10 +50,10 @@ export const StorySchema = new Schema<IStory>(
       required: false,
       default: [],
     },
-    viewsCount: {
-      type: Number,
+    viewers: {
+      type: [String],
       required: false,
-      default: 0,
+      default: [],
     },
     isApproved: {
       type: Boolean,

@@ -1,6 +1,7 @@
 import { TypedRequestBody } from "@/interfaces/express/TypedRequestBody";
 import { HttpStatusCode } from "axios";
 import {
+  IStory,
   RegisteringStory,
   RegisteringTranslation,
 } from "@/interfaces/story/IStory";
@@ -27,11 +28,7 @@ export default class StoriesRouter {
       verifyDocument(StoryModel),
       this.incrementStoryShares
     );
-    this.router.put(
-      "/:id/view",
-      verifyDocument(StoryModel),
-      this.incrementStoryViews
-    );
+    this.router.put("/:id/view", verifyDocument(StoryModel), this.viewStory);
     this.router.put("/:id/emoji", verifyDocument(StoryModel), this.emojiStory);
     this.router.put(
       "/:id/translate",
@@ -51,6 +48,20 @@ export default class StoriesRouter {
       authorize([UserRole.publisher, UserRole.admin]),
       verifyDocument(StoryModel),
       this.approveTranslation
+    );
+    this.router.put(
+      "/:id",
+      protect,
+      authorize([UserRole.publisher, UserRole.admin]),
+      verifyDocument(StoryModel),
+      this.updateStory
+    );
+    this.router.delete(
+      "/:id",
+      protect,
+      authorize([UserRole.admin]),
+      verifyDocument(StoryModel),
+      this.deleteStory
     );
 
     return this.router;
@@ -99,7 +110,7 @@ export default class StoriesRouter {
    * @access    Public
    */
   static async incrementStoryShares(
-    req: Request<{ id: string }, any, { platform: string }>,
+    req: Request<{ id: string }, unknown, { platform: string }>,
     res: Response,
     next: NextFunction
   ) {
@@ -117,19 +128,19 @@ export default class StoriesRouter {
   }
 
   /**
-   * @desc      Increments the views count of a story
+   * @desc      Adds a viewer to the story
    * @route     PUT /api/v1/stories/:id/view
    * @access    Public
    */
-  static async incrementStoryViews(
-    req: Request<{ id: string }>,
+  static async viewStory(
+    req: Request<{ id: string }, never, { userId: string }>,
     res: Response,
     next: NextFunction
   ) {
     try {
       const story = await StoryModel.findByIdAndUpdate(
         req.params.id,
-        { $inc: { viewsCount: 1 } },
+        { $addToSet: { viewers: req.body.userId } },
         { returnDocument: "after" }
       );
 
@@ -145,7 +156,7 @@ export default class StoriesRouter {
    * @access    Public
    */
   static async emojiStory(
-    req: Request<{ id: string }, any, IEmoji>,
+    req: Request<{ id: string }, unknown, IEmoji>,
     res: Response,
     next: NextFunction
   ) {
@@ -184,7 +195,7 @@ export default class StoriesRouter {
   static async translateStory(
     req: Request<
       { id: string },
-      any,
+      unknown,
       { translatedFields: RegisteringTranslation }
     >,
     res: Response,
@@ -225,10 +236,10 @@ export default class StoriesRouter {
   /**
    * @desc      Approves a story
    * @route     PUT /api/v1/stories/:id/approve
-   * @access    Private
+   * @access    Private: admin, publisher
    */
   static async approveStory(
-    req: Request<{ id: string }, any, RegisteringStory>,
+    req: Request<{ id: string }, unknown, RegisteringStory>,
     res: Response,
     next: NextFunction
   ) {
@@ -256,12 +267,12 @@ export default class StoriesRouter {
   /**
    * @desc      Approves a translation
    * @route     PUT /api/v1/stories/:id/translations/:translationId/approve
-   * @access    Private
+   * @access    Private: admin, publisher
    */
   static async approveTranslation(
     req: Request<
       { id: string; translationId: string },
-      any,
+      unknown,
       RegisteringTranslation
     >,
     res: Response,
@@ -283,6 +294,52 @@ export default class StoriesRouter {
           arrayFilters: [{ "elem._id": req.params.translationId }],
           returnDocument: "after",
         }
+      );
+
+      res.status(HttpStatusCode.Ok).json({ success: true, data: updatedStory });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Updates a story
+   * @route     PUT /api/v1/stories/:id
+   * @access    Private: admin, publisher
+   */
+  static async updateStory(
+    req: Request<{ id: string }, unknown, IStory>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const updatedStory = await StoryModel.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { returnDocument: "after" }
+      );
+
+      res.status(HttpStatusCode.Ok).json({ success: true, data: updatedStory });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @desc      Deletes a story
+   * @route     DELETE /api/v1/stories/:id
+   * @access    Private: admin
+   */
+  static async deleteStory(
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const updatedStory = await StoryModel.findByIdAndUpdate(
+        req.params.id,
+        { $set: { isDeleted: true } },
+        { returnDocument: "after" }
       );
 
       res.status(HttpStatusCode.Ok).json({ success: true, data: updatedStory });

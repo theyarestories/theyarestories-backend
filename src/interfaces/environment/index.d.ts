@@ -9,6 +9,7 @@ declare global {
       JWT_COOKIE_EXPIRE: string;
       FRONTEND_URL: string;
       HIGHLIGHT_PROJECT_ID: string;
+      FORWARD_EMAIL_PASSWORD: string;
     }
   }
 }

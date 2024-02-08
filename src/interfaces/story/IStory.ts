@@ -7,8 +7,10 @@ export interface ITranslation {
   translationLanguage: string;
   fromLanguage: string;
   protagonist: string;
+  author: string;
   story: string;
   job?: string;
+  isOriginal: boolean;
   isApproved: boolean;
   approvedBy: string | null;
   createdAt: string;
@@ -19,8 +21,10 @@ export type RegisteringTranslation = {
   translationLanguage: string;
   fromLanguage: string;
   protagonist: string;
+  author: string;
   story: string;
   job?: string;
+  isOriginal?: boolean;
   isApproved?: boolean;
   approvedBy?: string;
 };
@@ -29,6 +33,7 @@ export type IStory = {
   _id: Types.ObjectId;
   protagonist: string;
   protagonistTranslations: string[];
+  author: string;
   story: string;
   job?: string;
   avatar: IImage;
@@ -39,7 +44,7 @@ export type IStory = {
     [key: string]: number;
   };
   tags: string[];
-  viewsCount: number;
+  viewers: string[];
   translationLanguage: String; // ar
   translations: ITranslation[];
   isApproved: boolean;
@@ -53,6 +58,7 @@ export type IStory = {
 export type RegisteringStory = {
   protagonist: string;
   protagonistTranslations: string[];
+  author: string;
   story: string;
   job?: string;
   city: string;

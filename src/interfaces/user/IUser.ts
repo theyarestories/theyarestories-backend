@@ -12,11 +12,15 @@ export interface IUser {
   email: string;
   password: string;
   role: UserRole;
+  avatar?: string;
+  resetPasswordToken?: string;
+  resetPasswordExpire?: number;
   createdAt: Date;
   updatedAt: string;
 }
 
 export interface RegisteringUser {
+  mixpanelId: string;
   username: string;
   email: string;
   password: string;

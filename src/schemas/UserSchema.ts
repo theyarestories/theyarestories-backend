@@ -26,11 +26,23 @@ export const UserSchema = new Schema<IUser, IUserModel>(
       enum: Object.values(UserRole),
       default: UserRole.user,
     },
+    avatar: {
+      type: String,
+      required: false,
+      default: null,
+    },
     password: {
       type: String,
       required: [true, "Please add a password"],
-      minlength: 6,
       select: false,
+    },
+    resetPasswordToken: {
+      type: String,
+      required: false,
+    },
+    resetPasswordExpire: {
+      type: Date,
+      required: false,
     },
   },
   {
