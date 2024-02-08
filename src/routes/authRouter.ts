@@ -236,7 +236,7 @@ export default class AuthRouter {
       to: [user.email],
       subject: "Reset your password",
       html: resetPasswordEmailHtml(
-        `${process.env.FRONTEND_URL}/reset-password?${resetToken}`
+        `${process.env.FRONTEND_URL}/reset-password?resetToken=${resetToken}`
       ),
     });
     if (emailResult.isErr()) {
