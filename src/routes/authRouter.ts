@@ -294,7 +294,7 @@ export default class AuthRouter {
     user.resetPasswordExpire = undefined;
     await user.save();
 
-    await this.replaceMixpanelId(
+    await AuthRouter.replaceMixpanelId(
       req.body.mixpanelId,
       user._id.toString(),
       next
