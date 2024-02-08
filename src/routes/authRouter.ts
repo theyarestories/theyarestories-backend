@@ -91,6 +91,11 @@ export default class AuthRouter {
         { $set: { "emojis.$[elem].userId": userId } },
         { arrayFilters: [{ "elem.userId": mixpanelId }] }
       );
+      // Update viewers
+      await StoryModel.updateMany(
+        { viewers: mixpanelId },
+        { $pull: { viewers: mixpanelId }, $push: { viewers: userId } }
+      );
     } catch (error) {
       next(error);
     }
