@@ -13,6 +13,8 @@ export interface IUser {
   password: string;
   role: UserRole;
   avatar?: string;
+  resetPasswordToken?: string;
+  resetPasswordExpire?: number;
   createdAt: Date;
   updatedAt: string;
 }
