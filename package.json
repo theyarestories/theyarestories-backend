@@ -2,7 +2,7 @@
   "name": "they-are-stories-server",
   "version": "1.0.0",
   "description": "Backend for They are Stories web app",
-  "main": "src/server.ts",
+  "main": "api/index.ts",
   "type": "commonjs",
   "nodemonConfig": {
     "ignore": [
@@ -10,18 +10,18 @@
       "node_modules"
     ],
     "watch": [
-      "src"
+      "api"
     ],
     "exec": "node -r tsconfig-paths/register -r ts-node/register",
     "ext": "ts,js"
   },
   "scripts": {
-    "dev": "npx nodemon src/server.ts",
+    "dev": "npx nodemon api/index.ts",
     "build": "tsc && tsc-alias",
-    "seed": "npx nodemon src/seeders/globalSeeder.ts i",
-    "unseed": "npx nodemon src/seeders/globalSeeder.ts d",
+    "seed": "npx nodemon api/seeders/globalSeeder.ts i",
+    "unseed": "npx nodemon api/seeders/globalSeeder.ts d",
     "start": "node dist/server.js",
-    "test": "mocha -r tsconfig-paths/register -r ts-node/register --exit --timeout 100000 src/tests/**/*.ts",
+    "test": "mocha -r tsconfig-paths/register -r ts-node/register --exit --timeout 100000 api/tests/**/*.ts",
     "test-single": "mocha -r tsconfig-paths/register -r ts-node/register --exit --timeout 100000"
   },
   "author": "moaaz-bhnas",

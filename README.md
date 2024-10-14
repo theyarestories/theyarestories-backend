@@ -38,8 +38,8 @@ To seed the database with users and movies, run
 
 ```
 # Destroy all data
-doppler run -- npx nodemon src/seeders/globalSeeder.ts d
+doppler run -- npx nodemon api/seeders/globalSeeder.ts d
 
 # Import all data
-doppler run -- npx nodemon src/seeders/globalSeeder.ts i
+doppler run -- npx nodemon api/seeders/globalSeeder.ts i
 ```

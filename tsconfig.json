@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./api",
     "sourceMap": true,
     "target": "es2016",
     "module": "commonjs",
@@ -11,11 +11,11 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./api/*"]
     }
   },
   "ts-node": {
     "files": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["api/**/*.ts"]
 }
